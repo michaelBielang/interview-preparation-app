@@ -1,5 +1,6 @@
-package com.tywdi.backend.qaVO;
+package com.tywdi.backend.model.qaVO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -35,13 +36,14 @@ public class QuestionAnswerVO {
     @NotBlank(message = "Name is mandatory")
     private String answer;
 
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     private LocalDateTime date;
 
     public QuestionAnswerVO() {
         //hibernate dft ctor
     }
 
-    public QuestionAnswerVO(String question, String answer) {
+    public QuestionAnswerVO(final String answer, final String question) {
         this.question = question;
         this.answer = answer;
         this.date = LocalDateTime.now();

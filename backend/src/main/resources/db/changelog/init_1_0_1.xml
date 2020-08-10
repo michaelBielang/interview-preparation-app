@@ -3,15 +3,18 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet author="michael.bielang" id="add_question">
-        <createTable tableName="question_answer">
+    <changeSet author="michael.bielang" id="add_user">
+        <createTable tableName="email">
             <column name="id" type="varchar(255)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="question_pk"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_pk"/>
             </column>
-            <column name="question" type="varchar(255)">
+            <column name="user_name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="answer" type="varchar(255)">
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="local_date_time" type="Date">

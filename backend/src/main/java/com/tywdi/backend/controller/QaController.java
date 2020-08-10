@@ -1,7 +1,7 @@
 package com.tywdi.backend.controller;
 
 
-import com.tywdi.backend.qaVO.QuestionAnswerVO;
+import com.tywdi.backend.model.qaVO.QuestionAnswerVO;
 import com.tywdi.backend.service.QaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +32,6 @@ public class QaController {
 
     @PostMapping(value = "/add-question")
     public void addNewQa(@RequestBody @Valid QuestionAnswerVO questionAnswerVO) {
-        qaService.addQa(questionAnswerVO);
+        qaService.addQa(questionAnswerVO.getAnswer(), questionAnswerVO.getQuestion());
     }
 }

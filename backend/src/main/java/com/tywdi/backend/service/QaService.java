@@ -1,7 +1,7 @@
 package com.tywdi.backend.service;
 
 
-import com.tywdi.backend.qaVO.QuestionAnswerVO;
+import com.tywdi.backend.model.qaVO.QuestionAnswerVO;
 import com.tywdi.backend.repository.QaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,8 @@ public class QaService {
     private QaRepository qaRepository;
 
     @Transactional
-    public void addQa(final QuestionAnswerVO questionAnswerVO) {
+    public void addQa(final String answer, final String question) {
+        final QuestionAnswerVO questionAnswerVO = new QuestionAnswerVO(answer, question);
         qaRepository.save(questionAnswerVO);
     }
 

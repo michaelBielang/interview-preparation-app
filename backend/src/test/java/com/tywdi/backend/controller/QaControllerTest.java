@@ -1,6 +1,6 @@
 package com.tywdi.backend.controller;
 
-import com.tywdi.backend.qaVO.QuestionAnswerVO;
+import com.tywdi.backend.model.qaVO.QuestionAnswerVO;
 import com.tywdi.backend.service.QaService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +30,7 @@ class QaControllerTest {
     private static final String QUESTION = "testQuestion";
     private static final String ANSWER = "testAnswer";
 
-    private final QuestionAnswerVO questionAnswerVO = new QuestionAnswerVO(QUESTION, ANSWER);
+    private final QuestionAnswerVO questionAnswerVO = new QuestionAnswerVO(ANSWER, QUESTION);
     private final List<QuestionAnswerVO> questionAnswerVOList = List.of(questionAnswerVO);
     private final ArgumentCaptor<QuestionAnswerVO> questionAnswerVOArgumentCaptor = ArgumentCaptor.forClass(QuestionAnswerVO.class);
 
@@ -53,11 +53,6 @@ class QaControllerTest {
     void addNewQa() {
         qaController.addNewQa(questionAnswerVO);
 
-        verify(qaService, times(1)).addQa(questionAnswerVOArgumentCaptor.capture());
-
-        final QuestionAnswerVO capturedExpectedObject = questionAnswerVOArgumentCaptor.getValue();
-
-        assertThat(capturedExpectedObject.getAnswer()).isEqualTo(ANSWER);
-        assertThat(capturedExpectedObject.getQuestion()).isEqualTo(QUESTION);
+        verify(qaService, times(1)).addQa(ANSWER, QUESTION);
     }
 }

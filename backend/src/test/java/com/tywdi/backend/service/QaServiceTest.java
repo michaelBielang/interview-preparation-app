@@ -1,8 +1,7 @@
 package com.tywdi.backend.service;
 
-import com.tywdi.backend.qaVO.QuestionAnswerVO;
+import com.tywdi.backend.model.qaVO.QuestionAnswerVO;
 import com.tywdi.backend.repository.QaRepository;
-import com.tywdi.backend.service.QaService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -37,12 +36,11 @@ class QaServiceTest {
     private static final String QUESTION = "question";
     private static final String ANSWER = "answer";
     private final ArgumentCaptor<QuestionAnswerVO> qaRepositoryArgumentCaptor = ArgumentCaptor.forClass(QuestionAnswerVO.class);
-    private final QuestionAnswerVO expectedObject = new QuestionAnswerVO(QUESTION, ANSWER);
-
+    private final QuestionAnswerVO expectedObject = new QuestionAnswerVO(ANSWER, QUESTION);
 
     @Test
     void addQa() {
-        qaService.addQa(expectedObject);
+        qaService.addQa(ANSWER, QUESTION);
 
         verify(qaRepository, times(1)).save(qaRepositoryArgumentCaptor.capture());
 
