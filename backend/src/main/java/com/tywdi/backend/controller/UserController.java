@@ -25,8 +25,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
-    @RequestMapping(value = "/add")
+    @PostMapping(value = "/add")
     public void addUser(@RequestParam @NotBlank final String userName, @RequestParam @NotBlank final String password,
                         @RequestParam @NotBlank final String email) {
         final User user = new User(userName, email, password);
@@ -38,4 +37,5 @@ public class UserController {
     public Optional<User> getUser(final String email) {
         return userService.getUser(email);
     }
+
 }

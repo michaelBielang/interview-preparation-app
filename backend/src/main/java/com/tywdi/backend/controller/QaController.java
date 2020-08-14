@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -30,8 +31,18 @@ public class QaController {
         return qaService.getQaList();
     }
 
+    @GetMapping(value = "/question")
+    public Optional<QuestionAnswerVO> getQuestion(@RequestParam("id") final String id) {
+        return qaService.getQuestion(id);
+    }
+
     @PostMapping(value = "/add-question")
-    public void addNewQa(@RequestBody @Valid QuestionAnswerVO questionAnswerVO) {
+    public void addNewQa(@RequestBody @Valid final QuestionAnswerVO questionAnswerVO) {
         qaService.addQa(questionAnswerVO.getAnswer(), questionAnswerVO.getQuestion());
+    }
+
+    @PutMapping(value = "question/{id}")
+    public void updateQuestion(@RequestBody @Valid final QuestionAnswerVO updated, @PathVariable final String id) {
+        qaService.updateQuestion(updated.getAnswer(), updated.getQuestion(), id);
     }
 }

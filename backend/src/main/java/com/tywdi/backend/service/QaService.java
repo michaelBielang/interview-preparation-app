@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  * Organisation: Codemerger Ldt.
  * Project: qa
@@ -31,5 +33,19 @@ public class QaService {
 
     public Iterable<QuestionAnswerVO> getQaList() {
         return qaRepository.findAll();
+    }
+
+    public Optional<QuestionAnswerVO> getQuestion(final String id) {
+        return qaRepository.findById(id);
+    }
+
+    @Transactional
+    public void updateQuestion(final String newAnswer, final String newQuestion, final String id) {
+        final Optional<QuestionAnswerVO> questionAnswerVO = qaRepository.findById(id);
+
+        questionAnswerVO.ifPresent(user -> {
+            user.setAnswer(newAnswer);
+            user.setQuestion(newQuestion);
+        });
     }
 }
