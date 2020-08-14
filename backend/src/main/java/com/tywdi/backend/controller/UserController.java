@@ -20,15 +20,15 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/user")
-public class UserController {
+public final class UserController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/add")
-    public void addUser(@RequestParam @NotBlank final String userName, @RequestParam @NotBlank final String password,
+    @PostMapping(value = "/add") //no vo just because :=)
+    public void addUser(@RequestParam @NotBlank final String username, @RequestParam @NotBlank final String password,
                         @RequestParam @NotBlank final String email) {
-        final User user = new User(userName, email, password);
+        final User user = new User(username, email, password);
 
         userService.addUser(user);
     }

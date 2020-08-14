@@ -4,9 +4,9 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
     <changeSet author="michael.bielang" id="add_user">
-        <createTable tableName="email">
+        <createTable tableName="user">
             <column name="id" type="varchar(255)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="user_pk"/>
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="user_name" type="varchar(255)">
                 <constraints nullable="false"/>
@@ -15,9 +15,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="password" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="local_date_time" type="Date">
                 <constraints nullable="false"/>
             </column>
         </createTable>

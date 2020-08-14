@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -18,22 +18,24 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class User {
+public final class User {
 
     @Id
     private String email;
-    private String userName;
+
+    @NotBlank(message = "username is mandatory")
+    private String username;
+
+    @NotBlank(message = "password is mandatory")
     private String password;
-    private LocalDateTime localDateTime;
 
     public User() {
         //dflt ctor for hibernate
     }
 
-    public User(final String userName, final String email, final String password) {
-        this.userName = userName;
+    public User(final String username, final String email, final String password) {
+        this.username = username;
         this.password = password; // TODO: 10.08.2020 salt
         this.email = email;
-        this.localDateTime = LocalDateTime.now();
     }
 }

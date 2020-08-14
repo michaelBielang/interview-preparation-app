@@ -5,6 +5,8 @@ import com.tywdi.backend.model.qaVO.QuestionAnswerVO;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 /**
  * Organisation: Codemerger Ldt.
  * Project: qa
@@ -16,5 +18,5 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface QaRepository extends CrudRepository<QuestionAnswerVO, String> {
+public interface QaRepository extends CrudRepository<QuestionAnswerVO, UUID> {
 }

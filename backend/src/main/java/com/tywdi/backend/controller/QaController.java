@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/app")
-public class QaController {
+public final class QaController {
 
     @Autowired
     private QaService qaService;
@@ -42,7 +42,7 @@ public class QaController {
     }
 
     @PutMapping(value = "question/{id}")
-    public void updateQuestion(@RequestBody @Valid final QuestionAnswerVO updated, @PathVariable final String id) {
-        qaService.updateQuestion(updated.getAnswer(), updated.getQuestion(), id);
+    public void updateQuestion(@RequestBody @Valid final QuestionAnswerVO updatedQAV, @PathVariable final String id) {
+        qaService.updateQuestion(updatedQAV, id);
     }
 }

@@ -3,18 +3,17 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
+    <property name="u_id" value="random_uuid()" dbms="h2"/>
+
     <changeSet author="michael.bielang" id="add_question">
         <createTable tableName="question_answer">
-            <column name="id" type="varchar(255)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="question_pk"/>
+            <column name="id" type="uuid" defaultValueComputed="${u_id}">
+                <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="question" type="varchar(255)">
+            <column name="question" type="CLOB">
                 <constraints nullable="false"/>
             </column>
-            <column name="answer" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="local_date_time" type="Date">
+            <column name="answer" type="CLOB">
                 <constraints nullable="false"/>
             </column>
         </createTable>
