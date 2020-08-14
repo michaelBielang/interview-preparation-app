@@ -1,7 +1,7 @@
 package com.tywdi.backend.service;
 
 
-import com.tywdi.backend.model.qaVO.QuestionAnswerVO;
+import com.tywdi.backend.model.qaVO.QuestionAnswerDTO;
 import com.tywdi.backend.repository.QaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,27 +30,27 @@ public class QaService {
 
     @Transactional
     public void addQa(final String answer, final String question) {
-        final QuestionAnswerVO questionAnswerVO = new QuestionAnswerVO(answer, question);
-        qaRepository.save(questionAnswerVO);
+        final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(answer, question);
+        qaRepository.save(questionAnswerDTO);
     }
 
-    public Iterable<QuestionAnswerVO> getQaList() {
+    public Iterable<QuestionAnswerDTO> getQaList() {
         return qaRepository.findAll();
     }
 
-    public Optional<QuestionAnswerVO> getQuestion(final String id) {
+    public Optional<QuestionAnswerDTO> getQuestion(final String id) {
         return Optional.ofNullable(qaRepository
                 .findById(UUID.fromString(id))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not present")));
     }
 
     @Transactional
-    public void updateQuestion(final QuestionAnswerVO updatedQAV, final String id) {
-        final QuestionAnswerVO questionAnswerVO = qaRepository
+    public void updateQuestion(final QuestionAnswerDTO updatedQAV, final String id) {
+        final QuestionAnswerDTO questionAnswerDTO = qaRepository
                 .findById(UUID.fromString(id))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not present"));
 
-        questionAnswerVO.setAnswer(updatedQAV.getAnswer());
-        questionAnswerVO.setQuestion(updatedQAV.getQuestion());
+        questionAnswerDTO.setAnswer(updatedQAV.getAnswer());
+        questionAnswerDTO.setQuestion(updatedQAV.getQuestion());
     }
 }

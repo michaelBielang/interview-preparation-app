@@ -1,7 +1,7 @@
 package com.tywdi.backend.controller;
 
 
-import com.tywdi.backend.model.qaVO.QuestionAnswerVO;
+import com.tywdi.backend.model.qaVO.QuestionAnswerDTO;
 import com.tywdi.backend.service.QaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,22 +27,22 @@ public final class QaController {
     private QaService qaService;
 
     @GetMapping(value = "/questions")
-    public Iterable<QuestionAnswerVO> getQuestions() {
+    public Iterable<QuestionAnswerDTO> getQuestions() {
         return qaService.getQaList();
     }
 
     @GetMapping(value = "/question")
-    public Optional<QuestionAnswerVO> getQuestion(@RequestParam("id") final String id) {
+    public Optional<QuestionAnswerDTO> getQuestion(@RequestParam("id") final String id) {
         return qaService.getQuestion(id);
     }
 
     @PostMapping(value = "/add-question")
-    public void addNewQa(@RequestBody @Valid final QuestionAnswerVO questionAnswerVO) {
-        qaService.addQa(questionAnswerVO.getAnswer(), questionAnswerVO.getQuestion());
+    public void addNewQa(@RequestBody @Valid final QuestionAnswerDTO questionAnswerDTO) {
+        qaService.addQa(questionAnswerDTO.getAnswer(), questionAnswerDTO.getQuestion());
     }
 
     @PutMapping(value = "question/{id}")
-    public void updateQuestion(@RequestBody @Valid final QuestionAnswerVO updatedQAV, @PathVariable final String id) {
+    public void updateQuestion(@RequestBody @Valid final QuestionAnswerDTO updatedQAV, @PathVariable final String id) {
         qaService.updateQuestion(updatedQAV, id);
     }
 }

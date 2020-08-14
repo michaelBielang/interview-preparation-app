@@ -1,6 +1,6 @@
 package com.tywdi.backend.controller;
 
-import com.tywdi.backend.model.qaVO.QuestionAnswerVO;
+import com.tywdi.backend.model.qaVO.QuestionAnswerDTO;
 import com.tywdi.backend.service.QaService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,9 +30,9 @@ class QaControllerTest {
     private static final String QUESTION = "testQuestion";
     private static final String ANSWER = "testAnswer";
 
-    private final QuestionAnswerVO questionAnswerVO = new QuestionAnswerVO(ANSWER, QUESTION);
-    private final List<QuestionAnswerVO> questionAnswerVOList = List.of(questionAnswerVO);
-    private final ArgumentCaptor<QuestionAnswerVO> questionAnswerVOArgumentCaptor = ArgumentCaptor.forClass(QuestionAnswerVO.class);
+    private final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(ANSWER, QUESTION);
+    private final List<QuestionAnswerDTO> questionAnswerDTOList = List.of(questionAnswerDTO);
+    private final ArgumentCaptor<QuestionAnswerDTO> questionAnswerVOArgumentCaptor = ArgumentCaptor.forClass(QuestionAnswerDTO.class);
 
     @InjectMocks
     private final QaController qaController = new QaController();
@@ -41,17 +41,17 @@ class QaControllerTest {
 
     @Test
     void getQuestions() {
-        when(qaService.getQaList()).thenReturn(questionAnswerVOList);
+        when(qaService.getQaList()).thenReturn(questionAnswerDTOList);
 
-        final QuestionAnswerVO questionAnswerVO = qaController.getQuestions().iterator().next();
+        final QuestionAnswerDTO questionAnswerDTO = qaController.getQuestions().iterator().next();
 
-        assertThat(questionAnswerVO.getQuestion()).isEqualTo(QUESTION);
-        assertThat(questionAnswerVO.getAnswer()).isEqualTo(ANSWER);
+        assertThat(questionAnswerDTO.getQuestion()).isEqualTo(QUESTION);
+        assertThat(questionAnswerDTO.getAnswer()).isEqualTo(ANSWER);
     }
 
     @Test
     void addNewQa() {
-        qaController.addNewQa(questionAnswerVO);
+        qaController.addNewQa(questionAnswerDTO);
 
         verify(qaService, times(1)).addQa(ANSWER, QUESTION);
     }

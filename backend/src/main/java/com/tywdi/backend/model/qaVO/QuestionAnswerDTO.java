@@ -22,7 +22,7 @@ import java.util.UUID;
 
 @Entity(name = "QUESTION_ANSWER")
 @Data
-public final class QuestionAnswerVO {
+public final class QuestionAnswerDTO {
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -35,11 +35,11 @@ public final class QuestionAnswerVO {
     @NotBlank(message = "Name is mandatory")
     private String answer;
 
-    public QuestionAnswerVO() {
+    public QuestionAnswerDTO() {
         //hibernate dft ctor
     }
 
-    public QuestionAnswerVO(final String answer, final String question) {
+    public QuestionAnswerDTO(final String answer, final String question) {
         this.question = question;
         this.answer = answer;
     }

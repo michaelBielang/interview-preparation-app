@@ -1,7 +1,7 @@
 package com.tywdi.backend.repository;
 
 
-import com.tywdi.backend.model.qaVO.QuestionAnswerVO;
+import com.tywdi.backend.model.qaVO.QuestionAnswerDTO;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,5 +18,5 @@ import java.util.UUID;
  */
 
 @Repository
-public interface QaRepository extends CrudRepository<QuestionAnswerVO, UUID> {
+public interface QaRepository extends CrudRepository<QuestionAnswerDTO, UUID> {
 }

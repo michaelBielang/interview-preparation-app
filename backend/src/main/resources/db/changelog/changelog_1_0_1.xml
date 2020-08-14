@@ -5,13 +5,10 @@
 
     <changeSet author="michael.bielang" id="add_user">
         <createTable tableName="user">
-            <column name="id" type="varchar(255)">
+            <column name="email" type="varchar(255)">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="user_name" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="email" type="varchar(255)">
+            <column name="username" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="password" type="varchar(255)">

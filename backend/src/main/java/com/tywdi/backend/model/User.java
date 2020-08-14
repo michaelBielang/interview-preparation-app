@@ -35,7 +35,7 @@ public final class User {
 
     public User(final String username, final String email, final String password) {
         this.username = username;
-        this.password = password; // TODO: 10.08.2020 salt
+        this.password = password;
         this.email = email;
     }
 }

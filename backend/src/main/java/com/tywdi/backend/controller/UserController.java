@@ -5,8 +5,9 @@ import com.tywdi.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import java.util.Optional;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -26,16 +27,16 @@ public final class UserController {
     private UserService userService;
 
     @PostMapping(value = "/add") //no vo just because :=)
-    public void addUser(@RequestParam @NotBlank final String username, @RequestParam @NotBlank final String password,
-                        @RequestParam @NotBlank final String email) {
-        final User user = new User(username, email, password);
-
-        userService.addUser(user);
+    public void addUser(@RequestParam("username") @NotBlank final String username,
+                        @RequestParam("password") @NotBlank @Min(5) final String password,
+                        @RequestParam("email") @NotBlank @Email final String email) {
+        userService.addUser(username, password, email);
     }
 
     @GetMapping
-    public Optional<User> getUser(final String email) {
-        return userService.getUser(email);
+    public User getUser(@RequestParam("email") @NotBlank @Email final String email,
+                        @RequestParam("password") @NotBlank @Min(5) final String password) {
+        return userService.getUser(email, password);
     }
 
 }

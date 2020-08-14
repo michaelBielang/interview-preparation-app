@@ -1,6 +1,6 @@
 package com.tywdi.backend.service;
 
-import com.tywdi.backend.model.qaVO.QuestionAnswerVO;
+import com.tywdi.backend.model.qaVO.QuestionAnswerDTO;
 import com.tywdi.backend.repository.QaRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,8 +35,8 @@ class QaServiceTest {
 
     private static final String QUESTION = "question";
     private static final String ANSWER = "answer";
-    private final ArgumentCaptor<QuestionAnswerVO> qaRepositoryArgumentCaptor = ArgumentCaptor.forClass(QuestionAnswerVO.class);
-    private final QuestionAnswerVO expectedObject = new QuestionAnswerVO(ANSWER, QUESTION);
+    private final ArgumentCaptor<QuestionAnswerDTO> qaRepositoryArgumentCaptor = ArgumentCaptor.forClass(QuestionAnswerDTO.class);
+    private final QuestionAnswerDTO expectedObject = new QuestionAnswerDTO(ANSWER, QUESTION);
 
     @Test
     void addQa() {
@@ -44,7 +44,7 @@ class QaServiceTest {
 
         verify(qaRepository, times(1)).save(qaRepositoryArgumentCaptor.capture());
 
-        final QuestionAnswerVO capturedExpectedObject = qaRepositoryArgumentCaptor.getValue();
+        final QuestionAnswerDTO capturedExpectedObject = qaRepositoryArgumentCaptor.getValue();
 
         assertThat(capturedExpectedObject.getAnswer()).isEqualTo(ANSWER);
         assertThat(capturedExpectedObject.getQuestion()).isEqualTo(QUESTION);
@@ -54,8 +54,8 @@ class QaServiceTest {
     void getQaList() {
         when(qaRepository.findAll()).thenReturn(List.of(expectedObject));
 
-        final QuestionAnswerVO questionAnswerVO = qaService.getQaList().iterator().next();
+        final QuestionAnswerDTO questionAnswerDTO = qaService.getQaList().iterator().next();
 
-        assertThat(questionAnswerVO).isEqualTo(expectedObject);
+        assertThat(questionAnswerDTO).isEqualTo(expectedObject);
     }
 }
