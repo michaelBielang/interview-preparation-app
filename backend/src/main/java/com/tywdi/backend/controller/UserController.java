@@ -26,10 +26,10 @@ public final class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/add") //no vo just because :=)
-    public void addUser(@RequestParam("username") @NotBlank final String username,
-                        @RequestParam("password") @NotBlank @Min(5) final String password,
-                        @RequestParam("email") @NotBlank @Email final String email) {
+    @PostMapping()
+    public void addUser(@RequestParam("username") final String username,
+                        @RequestParam("password") final String password,
+                        @RequestParam("email") final String email) {
         userService.addUser(username, password, email);
     }
 
