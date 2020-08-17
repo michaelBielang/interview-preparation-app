@@ -29,9 +29,9 @@ public class QaService {
     private QaRepository qaRepository;
 
     @Transactional
-    public void addQa(final String answer, final String question) {
+    public QuestionAnswerDTO addQa(final String answer, final String question) {
         final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(answer, question);
-        qaRepository.save(questionAnswerDTO);
+        return qaRepository.save(questionAnswerDTO);
     }
 
     public Iterable<QuestionAnswerDTO> getQaList() {

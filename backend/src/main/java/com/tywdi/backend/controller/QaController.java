@@ -37,8 +37,8 @@ public final class QaController {
     }
 
     @PostMapping(value = "/add-question")
-    public void addNewQa(@RequestBody @Valid final QuestionAnswerDTO questionAnswerDTO) {
-        qaService.addQa(questionAnswerDTO.getAnswer(), questionAnswerDTO.getQuestion());
+    public QuestionAnswerDTO addNewQa(@RequestBody @Valid final QuestionAnswerDTO questionAnswerDTO) {
+        return qaService.addQa(questionAnswerDTO.getAnswer(), questionAnswerDTO.getQuestion());
     }
 
     @PutMapping(value = "question/{id}")
