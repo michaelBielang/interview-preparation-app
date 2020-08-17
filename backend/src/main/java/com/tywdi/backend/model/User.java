@@ -5,8 +5,6 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -20,24 +18,18 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Data
-public final class User {
+public class User {
 
     @Id
-    @Email
     private String email;
-
-    @NotBlank(message = "username is mandatory")
     private String username;
-
-    @NotBlank(message = "password is mandatory")
-    @Min(5)
     private String password;
 
     public User() {
         //dflt ctor for hibernate
     }
 
-    public User(final String username, final String email, final String password) {
+    public User(final String username, @Email final String email, final String password) {
         this.username = username;
         this.password = password;
         this.email = email;

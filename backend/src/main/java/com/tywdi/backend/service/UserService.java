@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
+
 /**
  * Organisation: Codemerger Ldt.
  * Project: backend
@@ -42,7 +44,7 @@ public class UserService {
         final User user = userRepository
                 .getUserByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-        // TODO: 14.08.2020
+        // TODO: 17.08.2020  
     }
 
     public Iterable<User> getUsers() {
