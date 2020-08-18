@@ -1,6 +1,6 @@
 package com.tywdi.backend.service;
 
-import com.tywdi.backend.model.qaVO.QuestionAnswerDTO;
+import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +32,7 @@ class QaServiceIntegrationTest {
 
     private static final String ANSWER = "integrationTestAnswer";
     private static final String QUESTION = "integrationTestQuestion";
+    private static final QuestionAnswerDTO.Category CATEGORY = QuestionAnswerDTO.Category.BASIC;
 
     private final static String UPDATED_ANSWER = "updatedAnswer";
     private final static String UPDATED_QUESTION = "updatedQuestion";
@@ -42,16 +43,16 @@ class QaServiceIntegrationTest {
     //positive case
     @Test
     void addQa() {
-        final UUID id = qaService.addQa(ANSWER, QUESTION).getId();
+        final UUID id = qaService.addQa(ANSWER, QUESTION, CATEGORY).getId();
         assertThat(qaService.getQuestion(id.toString())).isNotNull();
     }
 
     //positive case
     @Test
     void updateQuestion() {
-        final UUID id = qaService.addQa(ANSWER, QUESTION).getId();
+        final UUID id = qaService.addQa(ANSWER, QUESTION, CATEGORY).getId();
 
-        final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(UPDATED_ANSWER, UPDATED_QUESTION);
+        final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(UPDATED_ANSWER, UPDATED_QUESTION, CATEGORY);
         qaService.updateQuestion(questionAnswerDTO, id.toString());
 
         final Optional<QuestionAnswerDTO> updatedQA = qaService.getQuestion(id.toString());
@@ -65,7 +66,7 @@ class QaServiceIntegrationTest {
     @Test
     void updateQuestionWithException() {
         final UUID uuid = UUID.randomUUID();
-        final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(UPDATED_ANSWER, UPDATED_QUESTION);
+        final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(UPDATED_ANSWER, UPDATED_QUESTION, CATEGORY);
 
         assertThatThrownBy(() -> {
             qaService.updateQuestion(questionAnswerDTO, uuid.toString());

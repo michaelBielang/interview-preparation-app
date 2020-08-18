@@ -1,7 +1,7 @@
 package com.tywdi.backend.service;
 
 
-import com.tywdi.backend.model.qaVO.QuestionAnswerDTO;
+import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
 import com.tywdi.backend.repository.QaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,8 +29,8 @@ public class QaService {
     private QaRepository qaRepository;
 
     @Transactional
-    public QuestionAnswerDTO addQa(final String answer, final String question) {
-        final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(answer, question);
+    public QuestionAnswerDTO addQa(final String answer, final String question, final QuestionAnswerDTO.Category category) {
+        final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(answer, question, category);
         return qaRepository.save(questionAnswerDTO);
     }
 

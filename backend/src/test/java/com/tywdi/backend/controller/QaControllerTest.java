@@ -1,6 +1,6 @@
 package com.tywdi.backend.controller;
 
-import com.tywdi.backend.model.qaVO.QuestionAnswerDTO;
+import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
 import com.tywdi.backend.service.QaService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,10 +29,10 @@ class QaControllerTest {
 
     private static final String QUESTION = "testQuestion";
     private static final String ANSWER = "testAnswer";
+    private static final QuestionAnswerDTO.Category CATEGORY = QuestionAnswerDTO.Category.BASIC;
 
-    private final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(ANSWER, QUESTION);
+    private final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(ANSWER, QUESTION, CATEGORY);
     private final List<QuestionAnswerDTO> questionAnswerDTOList = List.of(questionAnswerDTO);
-    private final ArgumentCaptor<QuestionAnswerDTO> questionAnswerVOArgumentCaptor = ArgumentCaptor.forClass(QuestionAnswerDTO.class);
 
     @InjectMocks
     private final QaController qaController = new QaController();
@@ -53,6 +53,6 @@ class QaControllerTest {
     void addNewQa() {
         qaController.addNewQa(questionAnswerDTO);
 
-        verify(qaService, times(1)).addQa(ANSWER, QUESTION);
+        verify(qaService, times(1)).addQa(ANSWER, QUESTION, CATEGORY);
     }
 }

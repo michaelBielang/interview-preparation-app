@@ -1,4 +1,4 @@
-package com.tywdi.backend.model.qaVO;
+package com.tywdi.backend.model.DTO;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -35,12 +35,23 @@ public final class QuestionAnswerDTO {
     @NotBlank(message = "Name is mandatory")
     private String answer;
 
+    private Category category;
+
     public QuestionAnswerDTO() {
         //hibernate dft ctor
     }
 
-    public QuestionAnswerDTO(final String answer, final String question) {
+    public QuestionAnswerDTO(final String answer, final String question, Category category) {
         this.question = question;
         this.answer = answer;
+        this.category = category;
+    }
+
+    public enum Category {
+
+        BASIC,
+        ADVANCED,
+        GODLIKE,
+        NONE
     }
 }

@@ -1,9 +1,10 @@
 package com.tywdi.backend.controller;
 
 
-import com.tywdi.backend.model.qaVO.QuestionAnswerDTO;
+import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
 import com.tywdi.backend.service.QaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,9 +37,10 @@ public final class QaController {
         return qaService.getQuestion(id);
     }
 
-    @PostMapping(value = "/add-question")
+    @PostMapping(value = "/question")
+    @ResponseStatus(HttpStatus.CREATED)
     public QuestionAnswerDTO addNewQa(@RequestBody @Valid final QuestionAnswerDTO questionAnswerDTO) {
-        return qaService.addQa(questionAnswerDTO.getAnswer(), questionAnswerDTO.getQuestion());
+        return qaService.addQa(questionAnswerDTO.getAnswer(), questionAnswerDTO.getQuestion(), questionAnswerDTO.getCategory());
     }
 
     @PutMapping(value = "question/{id}")

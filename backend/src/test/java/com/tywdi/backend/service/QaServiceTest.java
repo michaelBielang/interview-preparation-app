@@ -1,6 +1,6 @@
 package com.tywdi.backend.service;
 
-import com.tywdi.backend.model.qaVO.QuestionAnswerDTO;
+import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
 import com.tywdi.backend.repository.QaRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,20 +27,19 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class QaServiceTest {
 
+    private static final String QUESTION = "question";
+    private static final String ANSWER = "answer";
+    private static final QuestionAnswerDTO.Category CATEGORY = QuestionAnswerDTO.Category.BASIC;
+    @InjectMocks
+    private final QaService qaService = new QaService();
+    private final ArgumentCaptor<QuestionAnswerDTO> qaRepositoryArgumentCaptor = ArgumentCaptor.forClass(QuestionAnswerDTO.class);
+    private final QuestionAnswerDTO expectedObject = new QuestionAnswerDTO(ANSWER, QUESTION, CATEGORY);
     @Mock
     private QaRepository qaRepository;
 
-    @InjectMocks
-    private final QaService qaService = new QaService();
-
-    private static final String QUESTION = "question";
-    private static final String ANSWER = "answer";
-    private final ArgumentCaptor<QuestionAnswerDTO> qaRepositoryArgumentCaptor = ArgumentCaptor.forClass(QuestionAnswerDTO.class);
-    private final QuestionAnswerDTO expectedObject = new QuestionAnswerDTO(ANSWER, QUESTION);
-
     @Test
     void addQa() {
-        qaService.addQa(ANSWER, QUESTION);
+        qaService.addQa(ANSWER, QUESTION, CATEGORY);
 
         verify(qaRepository, times(1)).save(qaRepositoryArgumentCaptor.capture());
 
