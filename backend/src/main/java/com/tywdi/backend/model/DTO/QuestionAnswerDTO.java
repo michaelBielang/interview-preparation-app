@@ -3,9 +3,7 @@ package com.tywdi.backend.model.DTO;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
@@ -35,6 +33,7 @@ public final class QuestionAnswerDTO {
     @NotBlank(message = "Name is mandatory")
     private String answer;
 
+    @Enumerated(EnumType.STRING)
     private Category category;
 
     public QuestionAnswerDTO() {

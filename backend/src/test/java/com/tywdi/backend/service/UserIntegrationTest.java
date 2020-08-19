@@ -1,5 +1,6 @@
 package com.tywdi.backend.service;
 
+import com.tywdi.backend.model.Enums.Role;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
-import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -37,15 +36,15 @@ class UserIntegrationTest {
 
     @Test
     public void addUser() {
-        userService.addUser(USER_NAME, PASSWORD, EMAIL);
+        userService.addUser(USER_NAME, PASSWORD, EMAIL, Role.USER);
         assertThat(userService.getUser(EMAIL, PASSWORD)).isNotNull();
     }
 
     @Test // negative
     public void addExistingUser() {
-        userService.addUser("USER_NAME", "PASSWORD", EMAIL);
+        userService.addUser("USER_NAME", "PASSWORD", EMAIL, Role.USER);
         assertThatExceptionOfType(ResponseStatusException.class)
-                .isThrownBy(() -> userService.addUser(USER_NAME, PASSWORD, EMAIL))
+                .isThrownBy(() -> userService.addUser(USER_NAME, PASSWORD, EMAIL, Role.USER))
                 .withMessageContaining("already registered");
     }
 }

@@ -3,11 +3,11 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet author="michael.bielang" id="add_category">
-        <sql>ALTER TABLE QUESTION_ANSWER ADD CATEGORY ENUM('BASIC', 'ADVANCED', 'GODLIKE', 'NONE') DEFAULT 'BASIC';
-        </sql>
-        <rollback>
-            <dropTable tableName="QUESTION_ANSWER"/>
-        </rollback>
+    <changeSet author="michael.bielang" id="add_role_to_user">
+        <addColumn tableName="user">
+            <column name="role" type="varchar(255)" defaultValue="GUEST">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
     </changeSet>
 </databaseChangeLog>

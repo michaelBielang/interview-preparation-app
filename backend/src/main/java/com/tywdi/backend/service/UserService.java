@@ -1,5 +1,6 @@
 package com.tywdi.backend.service;
 
+import com.tywdi.backend.model.Enums.Role;
 import com.tywdi.backend.model.User;
 import com.tywdi.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
-import javax.validation.Valid;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -44,7 +43,7 @@ public class UserService {
         final User user = userRepository
                 .getUserByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-        // TODO: 17.08.2020  
+        // TODO: 17.08.2020
     }
 
     public Iterable<User> getUsers() {
@@ -52,15 +51,15 @@ public class UserService {
     }
 
     @Transactional
-    public void addUser(final String username, final String password, final String email) {
+    public User addUser(final String username, final String password, final String email, final Role role) {
         if (userRepository.getUserByEmail(email).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User " + email + " already registered");
         }
         final String encodedPW = generatedEncodedPassword(password);
 
-        final User user = new User(username, email, encodedPW);
+        final User user = new User(username, email, encodedPW, role);
 
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     private String generatedEncodedPassword(final String password) {

@@ -1,5 +1,6 @@
 package com.tywdi.backend.controller;
 
+import com.tywdi.backend.model.Enums.Role;
 import com.tywdi.backend.model.User;
 import com.tywdi.backend.service.UserService;
 import org.hibernate.validator.constraints.Length;
@@ -32,10 +33,10 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addUser(@RequestParam("username") @NotBlank final String username,
+    public User addUser(@RequestParam("username") @NotBlank final String username,
                         @RequestParam("password") @Length(min = 5) final String password,
                         @RequestParam("email") @Email final String email) {
-        userService.addUser(username, password, email);
+        return userService.addUser(username, password, email, Role.USER);
     }
 
     @GetMapping

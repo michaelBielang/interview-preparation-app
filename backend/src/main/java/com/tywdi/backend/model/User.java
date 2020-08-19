@@ -1,8 +1,12 @@
 package com.tywdi.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tywdi.backend.model.Enums.Role;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 
@@ -15,7 +19,6 @@ import javax.validation.constraints.Email;
  * @author: Michael Bielang, b137ang@codemerger.com.
  * @version: java version "14" 2020-03-17
  */
-
 @Entity
 @Data
 public class User {
@@ -23,15 +26,21 @@ public class User {
     @Id
     private String email;
     private String username;
+
+    @JsonIgnore
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public User() {
         //dflt ctor for hibernate
     }
 
-    public User(final String username, @Email final String email, final String password) {
+    public User(final String username, @Email final String email, final String password, final Role role) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.role = role;
     }
 }

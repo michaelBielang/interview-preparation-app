@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc
-class QaControllerIntegrationTest {
+public class QaControllerIntegrationTest {
 
     private static final String QA_URL = "/app";
     private static final String QUESTION = "testQuestion";
@@ -87,10 +87,12 @@ class QaControllerIntegrationTest {
 
     @Test
     void getQuestion() {
+        // TODO - michael.bielang:
     }
 
 
     @Test
     void updateQuestion() {
+        // TODO - michael.bielang:
     }
 }
