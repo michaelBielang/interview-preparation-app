@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -29,6 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public UserDetailsService userDetailsServiceBean() throws Exception {
         return super.userDetailsServiceBean();
+        // TODO - michael.bielang: implement security
     }
 
     @Override
@@ -42,11 +42,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll();
 
         //later
-/*        http.authorizeRequests()
-                .antMatchers("/").permitAll()
+        /*http.authorizeRequests()
+                .antMatchers("/register").permitAll()
                 .anyRequest().authenticated()
-                .and()
-                .formLogin().loginPage("login")
+                .and().formLogin().loginPage("/login").permitAll()
                 .and()
                 .logout().invalidateHttpSession(true).clearAuthentication(true);*/
     }

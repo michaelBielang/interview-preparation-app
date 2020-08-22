@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -43,14 +42,14 @@ class QaServiceIntegrationTest {
     //positive case
     @Test
     void addQa() {
-        final UUID id = qaService.addQa(ANSWER, QUESTION, CATEGORY).getId();
+        final Long id = qaService.addQa(ANSWER, QUESTION, CATEGORY).getId();
         assertThat(qaService.getQuestion(id.toString())).isNotNull();
     }
 
     //positive case
     @Test
     void updateQuestion() {
-        final UUID id = qaService.addQa(ANSWER, QUESTION, CATEGORY).getId();
+        final Long id = qaService.addQa(ANSWER, QUESTION, CATEGORY).getId();
 
         final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(UPDATED_ANSWER, UPDATED_QUESTION, CATEGORY);
         qaService.updateQuestion(questionAnswerDTO, id.toString());
@@ -65,11 +64,9 @@ class QaServiceIntegrationTest {
     //negative case
     @Test
     void updateQuestionWithException() {
-        final UUID uuid = UUID.randomUUID();
-        final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(UPDATED_ANSWER, UPDATED_QUESTION, CATEGORY);
-
+        final QuestionAnswerDTO questionAnswerDTO = qaService.addQa(UPDATED_ANSWER, UPDATED_QUESTION, CATEGORY);
         assertThatThrownBy(() -> {
-            qaService.updateQuestion(questionAnswerDTO, uuid.toString());
+            qaService.updateQuestion(questionAnswerDTO, String.valueOf(questionAnswerDTO.getId() + 100));
         }).isInstanceOf(ResponseStatusException.class).hasMessageContaining("404 NOT_FOUND \"Element not present");
     }
 }

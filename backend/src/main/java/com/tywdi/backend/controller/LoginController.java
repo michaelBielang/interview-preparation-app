@@ -1,15 +1,16 @@
 package com.tywdi.backend.controller;
 
-import com.tywdi.backend.model.Enums.Role;
 import com.tywdi.backend.model.User;
 import com.tywdi.backend.service.UserService;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -23,18 +24,16 @@ import javax.validation.constraints.NotBlank;
  */
 
 @RestController
-@RequestMapping(value = "/register")
+@RequestMapping(value = "/login")
 @Validated
-public class UserController {
+public class LoginController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public User addUser(@RequestParam("username") @NotBlank final String username,
-                        @RequestParam("password") @Length(min = 5) final String password,
-                        @RequestParam("email") @Email final String email) {
-        return userService.addUser(username, password, email, Role.USER);
+    @GetMapping
+    public User getUser(@RequestParam("email") @NotBlank @Email final String email,
+                        @RequestParam("password") @NotBlank @Min(5) final String password) {
+        return userService.getUser(email, password);
     }
 }

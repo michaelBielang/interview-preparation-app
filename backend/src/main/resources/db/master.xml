@@ -9,6 +9,6 @@
     <include relativeToChangelogFile="true" file="changelog/changelog_1_0_1.xml"/>
     <include relativeToChangelogFile="true" file="changelog/changelog_1_0_2.xml"/>
     <include relativeToChangelogFile="true" file="changelog/changelog_1_0_3.xml"/>
-    
+
     <include relativeToChangelogFile="true" file="init_data/insert_default_data.xml"/>
 </databaseChangeLog>

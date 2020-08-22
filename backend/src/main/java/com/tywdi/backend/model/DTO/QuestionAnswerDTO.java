@@ -1,11 +1,9 @@
 package com.tywdi.backend.model.DTO;
 
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.UUID;
 
 
 /**
@@ -23,9 +21,8 @@ import java.util.UUID;
 public final class QuestionAnswerDTO {
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotBlank(message = "Name is mandatory")
     private String question;

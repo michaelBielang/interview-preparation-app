@@ -21,7 +21,6 @@ import java.util.Optional;
  */
 
 @RestController
-@RequestMapping(value = "/app")
 public final class QaController {
 
     @Autowired

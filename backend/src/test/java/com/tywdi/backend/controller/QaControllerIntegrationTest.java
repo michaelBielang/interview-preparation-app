@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class QaControllerIntegrationTest {
 
-    private static final String QA_URL = "/app";
+    private static final String QA_URL = "/api";
     private static final String QUESTION = "testQuestion";
     private static final String ANSWER = "testAnswer";
     private static final QuestionAnswerDTO.Category CATEGORY = QuestionAnswerDTO.Category.BASIC;

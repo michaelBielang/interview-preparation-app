@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -40,14 +39,14 @@ public class QaService {
 
     public Optional<QuestionAnswerDTO> getQuestion(final String id) {
         return Optional.ofNullable(qaRepository
-                .findById(UUID.fromString(id))
+                .findById(Long.parseLong(id))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not present")));
     }
 
     @Transactional
     public void updateQuestion(final QuestionAnswerDTO updatedQAV, final String id) {
         final QuestionAnswerDTO questionAnswerDTO = qaRepository
-                .findById(UUID.fromString(id))
+                .findById(Long.parseLong(id))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not present"));
 
         questionAnswerDTO.setAnswer(updatedQAV.getAnswer());

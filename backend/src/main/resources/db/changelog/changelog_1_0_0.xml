@@ -7,7 +7,7 @@
 
     <changeSet author="michael.bielang" id="add_question">
         <createTable tableName="question_answer">
-            <column name="id" type="uuid" defaultValueComputed="${u_id}">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="question" type="CLOB">

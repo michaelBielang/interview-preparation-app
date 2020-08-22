@@ -5,8 +5,6 @@ import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
-
 /**
  * Organisation: Codemerger Ldt.
  * Project: qa
@@ -18,5 +16,5 @@ import java.util.UUID;
  */
 
 @Repository
-public interface QaRepository extends CrudRepository<QuestionAnswerDTO, UUID> {
+public interface QaRepository extends CrudRepository<QuestionAnswerDTO, Long> {
 }
