@@ -3,10 +3,11 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <property name="u_id" value="random_uuid()" dbms="h2"/>
+<!--    <property name="u_id" value="random_uuid()" dbms="h2"/>-->
 
     <changeSet author="michael.bielang" id="add_question">
         <createTable tableName="question_answer">
+            <!--<column name="id" type="uuid" defaultValueComputed="${u_id}">-->
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>

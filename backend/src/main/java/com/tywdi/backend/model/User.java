@@ -3,11 +3,9 @@ package com.tywdi.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tywdi.backend.model.Enums.Role;
 import lombok.Data;
+import org.hibernate.annotations.NaturalId;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 
 /**
@@ -24,6 +22,10 @@ import javax.validation.constraints.Email;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NaturalId
     private String email;
     private String username;
 

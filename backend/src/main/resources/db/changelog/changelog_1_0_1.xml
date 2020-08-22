@@ -5,8 +5,11 @@
 
     <changeSet author="michael.bielang" id="add_user">
         <createTable tableName="user">
-            <column name="email" type="varchar(255)">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false"/>
             </column>
             <column name="username" type="varchar(255)">
                 <constraints nullable="false"/>

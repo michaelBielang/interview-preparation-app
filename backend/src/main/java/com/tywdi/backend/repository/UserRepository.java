@@ -16,7 +16,7 @@ import java.util.Optional;
  * @version: java version "14" 2020-03-17
  */
 @Repository
-public interface UserRepository extends CrudRepository<User, String> {
+public interface UserRepository extends CrudRepository<User, Long> {
 
     Optional<User> getUserByEmail(String email);
 }
