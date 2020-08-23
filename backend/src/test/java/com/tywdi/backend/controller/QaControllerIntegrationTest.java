@@ -42,13 +42,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class QaControllerIntegrationTest {
 
-    private static final String QA_URL = "";
+    private static final String QA_URL = "/api";
     private static final String QUESTION = "testQuestion";
     private static final String ANSWER = "testAnswer";
     private static final QuestionAnswerDTO.Category CATEGORY = QuestionAnswerDTO.Category.BASIC;
 
     private final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(ANSWER, QUESTION, CATEGORY);
-    
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -68,7 +68,7 @@ public class QaControllerIntegrationTest {
     @Test
     void getQuestions() {
         final ResponseEntity<List<QuestionAnswerDTO>> listResponseEntity = testRestTemplate.exchange(
-                QA_URL + "/questions", HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+                "/questions", HttpMethod.GET, null, new ParameterizedTypeReference<>() {
                 });
 
         assertThat(listResponseEntity.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
@@ -78,6 +78,7 @@ public class QaControllerIntegrationTest {
     @Test
     void addNewQa() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(QA_URL + "/question")
+                .contextPath(QA_URL)
                 .content(JacksonUtils.toString(questionAnswerDTO, false))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

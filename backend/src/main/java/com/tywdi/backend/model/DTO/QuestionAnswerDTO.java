@@ -21,7 +21,8 @@ import javax.validation.constraints.NotBlank;
 public final class QuestionAnswerDTO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "QA_SEQ")
+    @SequenceGenerator(name = "QA_SEQ", sequenceName = "QA_SEQ", allocationSize = 100, initialValue = 100)
     private Long id;
 
     @NotBlank(message = "Name is mandatory")
