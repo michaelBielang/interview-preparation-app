@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -65,8 +63,9 @@ class QaServiceIntegrationTest {
     @Test
     void updateQuestionWithException() {
         final QuestionAnswerDTO questionAnswerDTO = qaService.addQa(UPDATED_ANSWER, UPDATED_QUESTION, CATEGORY);
-        assertThatThrownBy(() -> {
-            qaService.updateQuestion(questionAnswerDTO, String.valueOf(questionAnswerDTO.getId() + 100));
-        }).isInstanceOf(ResponseStatusException.class).hasMessageContaining("404 NOT_FOUND \"Element not present");
+        final Optional<QuestionAnswerDTO> optionalQuestionAnswerDTO =
+                qaService.updateQuestion(questionAnswerDTO, String.valueOf(questionAnswerDTO.getId() + 100));
+
+        assertThat(optionalQuestionAnswerDTO).isEmpty();
     }
 }

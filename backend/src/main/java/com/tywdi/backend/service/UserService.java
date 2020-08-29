@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 /**
  * Organisation: Codemerger Ldt.
  * Project: backend
@@ -32,20 +34,19 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User getUser(final String email, final String password) {
-        final User user = userRepository
-                .getUserByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User is not registered"));
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User is not registered");
-        }
-        return user;
+    public Optional<User> getUser(final String email, final String password) {
+        return userRepository.getUserByEmail(email);
     }
 
-    public void updateUser(final User updatedUser, final String email) {
+    public boolean verifyPassword(final String enteredPassword, final String storedPassword) {
+        return passwordEncoder.matches(enteredPassword, storedPassword);
+    }
+
+    public Optional<User> updateUser(final String username, final String password, final String email) {
         final User user = userRepository
                 .getUserByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        return Optional.empty();
         // TODO: 17.08.2020
     }
 
@@ -54,15 +55,16 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public User addUser(final String username, final String password, final String email, final Role role) {
+    public Optional<User> addUser(final String username, final String password, final String email, final Role role) {
+
         if (userRepository.getUserByEmail(email).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "User " + email + " already registered");
+            return Optional.empty();
         }
         final String encodedPW = generatedEncodedPassword(password);
 
         final User user = new User(username, email, encodedPW, role);
 
-        return userRepository.save(user);
+        return Optional.of(userRepository.save(user));
     }
 
     private String generatedEncodedPassword(final String password) {

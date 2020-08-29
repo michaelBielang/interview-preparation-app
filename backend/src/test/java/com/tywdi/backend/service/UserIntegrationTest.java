@@ -1,16 +1,17 @@
 package com.tywdi.backend.service;
 
 import com.tywdi.backend.model.Enums.Role;
+import com.tywdi.backend.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -43,8 +44,7 @@ class UserIntegrationTest {
     @Test // negative
     public void addExistingUser() {
         userService.addUser("USER_NAME", "PASSWORD", EMAIL, Role.USER);
-        assertThatExceptionOfType(ResponseStatusException.class)
-                .isThrownBy(() -> userService.addUser(USER_NAME, PASSWORD, EMAIL, Role.USER))
-                .withMessageContaining("already registered");
+        final Optional<User> user = userService.addUser(USER_NAME, PASSWORD, EMAIL, Role.USER);
+        assertThat(user).isEmpty();
     }
 }

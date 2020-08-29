@@ -6,9 +6,9 @@ import com.tywdi.backend.service.QaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -32,8 +32,9 @@ public final class QaController {
     }
 
     @GetMapping(value = "/question")
-    public Optional<QuestionAnswerDTO> getQuestion(@RequestParam("id") final String id) {
-        return qaService.getQuestion(id);
+    public QuestionAnswerDTO getQuestion(@RequestParam("id") final String id) {
+        return qaService.getQuestion(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not present"));
     }
 
     @PostMapping(value = "/question")
@@ -43,7 +44,10 @@ public final class QaController {
     }
 
     @PutMapping(value = "question/{id}")
-    public void updateQuestion(@RequestBody @Valid final QuestionAnswerDTO updatedQAV, @PathVariable final String id) {
-        qaService.updateQuestion(updatedQAV, id);
+    public QuestionAnswerDTO updateQuestion(@RequestBody @Valid final QuestionAnswerDTO updatedQAV, @PathVariable final String id) {
+        return qaService.updateQuestion(updatedQAV, id)
+                .orElseThrow(() -> {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not present");
+                });
     }
 }

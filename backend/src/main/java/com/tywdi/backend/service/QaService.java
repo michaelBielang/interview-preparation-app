@@ -4,10 +4,8 @@ package com.tywdi.backend.service;
 import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
 import com.tywdi.backend.repository.QaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -38,18 +36,18 @@ public class QaService {
     }
 
     public Optional<QuestionAnswerDTO> getQuestion(final String id) {
-        return Optional.ofNullable(qaRepository
-                .findById(Long.parseLong(id))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not present")));
+        return qaRepository.findById(Long.parseLong(id));
     }
 
     @Transactional
-    public void updateQuestion(final QuestionAnswerDTO updatedQAV, final String id) {
-        final QuestionAnswerDTO questionAnswerDTO = qaRepository
-                .findById(Long.parseLong(id))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not present"));
+    public Optional<QuestionAnswerDTO> updateQuestion(final QuestionAnswerDTO updatedQAV, final String id) {
+        Optional<QuestionAnswerDTO> optionalQuestionAnswerDTO = qaRepository.findById(Long.parseLong(id));
 
-        questionAnswerDTO.setAnswer(updatedQAV.getAnswer());
-        questionAnswerDTO.setQuestion(updatedQAV.getQuestion());
+        optionalQuestionAnswerDTO.ifPresent(dbObj -> {
+            dbObj.setAnswer(updatedQAV.getAnswer());
+            dbObj.setQuestion(updatedQAV.getQuestion());
+        });
+
+        return optionalQuestionAnswerDTO;
     }
 }

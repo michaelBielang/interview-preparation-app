@@ -2,19 +2,18 @@ package com.tywdi.backend.controller;
 
 import com.tywdi.backend.model.User;
 import com.tywdi.backend.service.UserService;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.EntityManager;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import java.awt.print.Book;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -37,6 +36,17 @@ public class LoginController {
     @GetMapping
     public User getUser(@RequestParam("email") @NotBlank @Email final String email,
                         @RequestParam("password") @NotBlank @Min(5) final String password) {
-        return userService.getUser(email, password);
+
+        final User user = userService.getUser(email, password).orElseThrow(() -> {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not registered");
+        });
+
+        final boolean passwordMatches = userService.verifyPassword(password, user.getPassword());
+
+        if (passwordMatches) {
+            return user;
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong credentials");
+        }
     }
 }
