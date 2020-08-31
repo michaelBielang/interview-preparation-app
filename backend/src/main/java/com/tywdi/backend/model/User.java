@@ -4,9 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tywdi.backend.model.Enums.Role;
 import lombok.Data;
 import org.hibernate.annotations.NaturalId;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -19,7 +25,7 @@ import javax.validation.constraints.Email;
  */
 @Entity
 @Data
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
@@ -45,5 +51,32 @@ public class User {
         this.password = password;
         this.email = email;
         this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> grantList = new ArrayList<>();
+        grantList.add(new SimpleGrantedAuthority(this.role.getAuthority()));
+        return grantList;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

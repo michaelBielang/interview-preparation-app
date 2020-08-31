@@ -42,6 +42,7 @@ public class UserController {
 
 
     @PutMapping(value = "user/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public User updateUser(@RequestParam("password") @Length(min = 5) final String password,
                            @RequestParam("username") @NotBlank final String username,
                            @PathVariable("id") final String id) {

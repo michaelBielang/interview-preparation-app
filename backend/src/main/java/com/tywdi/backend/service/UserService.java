@@ -15,6 +15,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
+import static org.springframework.security.core.userdetails.User.withUsername;
+
 /**
  * Organisation: Codemerger Ldt.
  * Project: backend
@@ -28,11 +30,13 @@ import java.util.Optional;
 @Service
 public class UserService implements UserDetailsService {
 
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
 
     public Optional<User> getUser(final String email, final String password) {
         return userRepository.getUserByEmail(email);
@@ -48,10 +52,6 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         return Optional.empty();
         // TODO: 17.08.2020
-    }
-
-    public Iterable<User> getUsers() {
-        return userRepository.findAll();
     }
 
     @Transactional
@@ -84,7 +84,17 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         final User user = userRepository
                 .getUserByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User is not registered"));
-        return null;
+                .orElseThrow(() -> {
+                    throw new UsernameNotFoundException("User not found");
+                });
+
+        return withUsername(user.getUsername())
+                .password(user.getPassword())
+                .authorities(user.getAuthorities())
+                .accountExpired(false)
+                .accountLocked(false)
+                .credentialsExpired(false)
+                .disabled(false)
+                .build();
     }
 }

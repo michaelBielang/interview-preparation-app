@@ -47,4 +47,5 @@ class UserIntegrationTest {
         final Optional<User> user = userService.addUser(USER_NAME, PASSWORD, EMAIL, Role.USER);
         assertThat(user).isEmpty();
     }
+    // TODO - michael.bielang: 31.08.2020 more tests
 }
