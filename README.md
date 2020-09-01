@@ -16,7 +16,8 @@ These are commonly asked questions, which make sometimes more or less sense in t
 ## Features
 
  * [x] Backend with Spring Boot and Java 14
- * [x] Frontend with Angular
+ * [x] JWT Auth.
+ * [x] Angular & React frontend
  * [x] H2 DB with liquibase
  * [x] Tests; backend and frontend
  * [x] A set of questions/answers
