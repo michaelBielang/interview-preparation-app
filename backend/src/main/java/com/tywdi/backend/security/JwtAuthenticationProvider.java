@@ -1,13 +1,11 @@
 package com.tywdi.backend.security;
 
 import com.tywdi.backend.service.JwtTokenService;
-import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,22 +26,18 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     private JwtTokenService jwtService;
 
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(Authentication authentication) {
 
-        try {
-            String token = (String) authentication.getCredentials();
-            String username = jwtService.getUsernameFromToken(token);
+        final String token = (String) authentication.getCredentials();
+        final String username = jwtService.getUsernameFromToken(token);
 
-            return jwtService.validateToken(token)
-                    .map(aBoolean -> new JwtAuthenticatedProfile(username))
-                    .orElseThrow(() -> new JwtAuthenticationException("JWT Token validation failed"));
-
-        } catch (JwtException ex) {
-            log.error(String.format("Invalid JWT Token: %s", ex.getMessage()));
-            throw new JwtAuthenticationException("Failed to verify token");
-        }
+        return jwtService.validateToken(token)
+                .map(aBoolean -> new JwtAuthenticatedProfile(username))
+                .orElseThrow(() -> {
+                    log.error(String.format("Invalid JWT Token: %s", token));
+                    return new JwtAuthenticationException("JWT Token validation failed");
+                });
     }
-
 
     @Override
     public boolean supports(Class<?> authentication) {

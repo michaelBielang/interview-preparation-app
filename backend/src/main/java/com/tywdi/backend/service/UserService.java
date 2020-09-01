@@ -30,7 +30,6 @@ import static org.springframework.security.core.userdetails.User.withUsername;
 @Service
 public class UserService implements UserDetailsService {
 
-
     @Autowired
     private UserRepository userRepository;
 
@@ -66,6 +65,20 @@ public class UserService implements UserDetailsService {
 
         return Optional.of(userRepository.save(user));
     }
+
+    // TODO - michael.bielang: 01.09.2020 further implementation for a session based plattform
+/*    @Transactional
+    public Optional<User> addUser(final String username, final String password, final String email, final Role role) {
+
+        if (userRepository.getUserByEmail(email).isPresent()) {
+            return Optional.empty();
+        }
+        final String encodedPW = generatedEncodedPassword(password);
+
+        final User user = new User(username, email, encodedPW, role);
+
+        return Optional.of(userRepository.save(user));
+    }*/
 
     private String generatedEncodedPassword(final String password) {
         String hashedPassword = passwordEncoder.encode(password);

@@ -1,16 +1,18 @@
 package com.tywdi.backend.controller;
 
+import com.tywdi.backend.model.DTO.AuthenticationRequest;
+import com.tywdi.backend.model.DTO.JwtTokenResponse;
 import com.tywdi.backend.model.User;
+import com.tywdi.backend.service.AuthenticationService;
 import com.tywdi.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -26,13 +28,26 @@ import javax.validation.constraints.NotBlank;
  */
 
 @RestController
-@RequestMapping(value = "/login")
 @Validated
 public class LoginController {
 
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @PostMapping("/login")
+    public ResponseEntity<JwtTokenResponse> createCustomer(@RequestBody AuthenticationRequest request) {
+        return new ResponseEntity<>(authenticationService.generateJWTToken(request.getEmail(), request.getPassword()), HttpStatus.OK);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    // TODO - michael.bielang: 01.09.2020 follow up implementation for session based implementation
     @GetMapping
     public User getUser(@RequestParam("email") @NotBlank @Email final String email,
                         @RequestParam("password") @NotBlank @Min(5) final String password) {

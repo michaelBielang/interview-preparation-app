@@ -1,7 +1,9 @@
 package com.tywdi.backend.controller;
 
+import com.tywdi.backend.model.DTO.JwtTokenResponse;
 import com.tywdi.backend.model.Enums.Role;
 import com.tywdi.backend.model.User;
+import com.tywdi.backend.service.JwtTokenService;
 import com.tywdi.backend.service.UserService;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +32,21 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtTokenService jwtTokenService;
+
+
     @PostMapping(value = "/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public User addUser(@RequestParam("username") @NotBlank final String username,
-                        @RequestParam("password") @Length(min = 5) final String password,
-                        @RequestParam("email") @Email final String email) {
-        return userService.addUser(username, password, email, Role.USER).orElseThrow(() -> {
+    public JwtTokenResponse addUser(@RequestParam("username") @NotBlank final String username,
+                                    @RequestParam("password") @Length(min = 5) final String password,
+                                    @RequestParam("email") @Email final String email) {
+
+        userService.addUser(username, password, email, Role.USER).orElseThrow(() -> {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User " + email + " already registered");
         });
+
+        return new JwtTokenResponse(jwtTokenService.generateToken(email));
     }
 
 

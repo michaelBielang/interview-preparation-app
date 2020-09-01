@@ -56,13 +56,13 @@ public class JwtTokenService {
                 .getBody();
     }
 
-    public String generateToken(final String username) {
+    public String generateToken(final String email) {
         final Date createdDate = new Date();
         final Date expirationDate = calculateExpirationDate(createdDate);
 
         return Jwts.builder()
                 .setClaims(new HashMap<>())
-                .setSubject(username)
+                .setSubject(email)
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS512, secret)
