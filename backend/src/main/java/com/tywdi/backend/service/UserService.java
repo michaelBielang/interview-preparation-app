@@ -36,6 +36,10 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public Optional<User> getUser(final String email, final String password) {
+        return userRepository.getUserByEmail(email);
+    }
+
     public boolean verifyPassword(final String enteredPassword, final String storedPassword) {
         return passwordEncoder.matches(enteredPassword, storedPassword);
     }
@@ -105,4 +109,5 @@ public class UserService implements UserDetailsService {
                 .disabled(false)
                 .build();
     }
+
 }

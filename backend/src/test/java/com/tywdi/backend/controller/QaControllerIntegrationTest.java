@@ -1,8 +1,10 @@
 package com.tywdi.backend.controller;
 
 import com.arakelian.jackson.utils.JacksonUtils;
+import com.tywdi.backend.helper.JwtTokenHelper;
 import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
 import com.tywdi.backend.service.QaService;
+import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,6 +47,7 @@ public class QaControllerIntegrationTest {
     private static final String QA_URL = "/api";
     private static final String QUESTION = "testQuestion";
     private static final String ANSWER = "testAnswer";
+    private static final String generatedEmail = RandomString.make(10);
     private static final QuestionAnswerDTO.Category CATEGORY = QuestionAnswerDTO.Category.BASIC;
 
     private final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(ANSWER, QUESTION, CATEGORY);
@@ -58,6 +61,9 @@ public class QaControllerIntegrationTest {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
+    @Autowired
+    private JwtTokenHelper jwtTokenHelper;
+
     @BeforeEach
     public void setupMocks() {
         final List<QuestionAnswerDTO> questionAnswerDTOList = List.of(questionAnswerDTO);
@@ -68,7 +74,8 @@ public class QaControllerIntegrationTest {
     @Test
     void getQuestions() {
         final ResponseEntity<List<QuestionAnswerDTO>> listResponseEntity = testRestTemplate.exchange(
-                "/questions", HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+                "/questions", HttpMethod.GET, jwtTokenHelper.withMailHeader(generatedEmail),
+                new ParameterizedTypeReference<>() {
                 });
 
         assertThat(listResponseEntity.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
@@ -78,6 +85,7 @@ public class QaControllerIntegrationTest {
     @Test
     void addNewQa() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(QA_URL + "/question")
+                .headers(jwtTokenHelper.withMail(generatedEmail))
                 .contextPath(QA_URL)
                 .content(JacksonUtils.toString(questionAnswerDTO, false))
                 .contentType(MediaType.APPLICATION_JSON)

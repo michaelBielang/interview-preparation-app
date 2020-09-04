@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Optional;
@@ -28,12 +29,12 @@ public class JwtTokenService {
 
     private final String secret;
 
-    private final Long expiration;
+    private final int expirationInHours;
 
     public JwtTokenService(@Value("${jwt.secret}") final String secret,
-                           @Value("${jwt.expiration}") final Long expiration) {
+                           @Value("${jwt.expiration}") final int expirationInHours) {
         this.secret = secret;
-        this.expiration = expiration;
+        this.expirationInHours = expirationInHours;
     }
 
     public String getUsernameFromToken(final String token) {
@@ -58,7 +59,7 @@ public class JwtTokenService {
 
     public String generateToken(final String email) {
         final Date createdDate = new Date();
-        final Date expirationDate = calculateExpirationDate(createdDate);
+        final Date expirationDate = calculateExpirationDate();
 
         return Jwts.builder()
                 .setClaims(new HashMap<>())
@@ -67,6 +68,10 @@ public class JwtTokenService {
                 .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
+    }
+
+    private Date localDateTimeToDate(final LocalDateTime localDateTime) {
+        return java.sql.Timestamp.valueOf(localDateTime);
     }
 
     private Boolean isTokenNotExpired(final String token) {
@@ -78,7 +83,9 @@ public class JwtTokenService {
         return isTokenNotExpired(token) ? Optional.of(Boolean.TRUE) : Optional.empty();
     }
 
-    private Date calculateExpirationDate(final Date createdDate) {
-        return new Date(createdDate.getTime() + expiration * 10000);
+    private Date calculateExpirationDate() {
+        return localDateTimeToDate(LocalDateTime
+                .now()
+                .plusHours(expirationInHours));
     }
 }
