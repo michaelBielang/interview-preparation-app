@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.Email;
@@ -51,17 +50,6 @@ public class LoginController {
     @GetMapping
     public User getUser(@RequestParam("email") @NotBlank @Email final String email,
                         @RequestParam("password") @NotBlank @Min(5) final String password) {
-
-        final User user = userService.getUser(email, password).orElseThrow(() -> {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not registered");
-        });
-
-        final boolean passwordMatches = userService.verifyPassword(password, user.getPassword());
-
-        if (passwordMatches) {
-            return user;
-        } else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong credentials");
-        }
+        return null;
     }
 }
