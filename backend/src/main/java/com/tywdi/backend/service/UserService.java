@@ -36,7 +36,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     public Optional<User> getUser(final String email, final String password) {
         return userRepository.getUserByEmail(email);
     }

@@ -42,6 +42,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Version
+    @JsonIgnore
+    private int version;
+
     public User() {
         //dflt ctor for hibernate
     }

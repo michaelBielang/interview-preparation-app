@@ -1,5 +1,6 @@
 package com.tywdi.backend.model.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -34,11 +35,15 @@ public final class QuestionAnswerDTO {
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    @Version
+    @JsonIgnore
+    private int version;
+
     public QuestionAnswerDTO() {
         //hibernate dft ctor
     }
 
-    public QuestionAnswerDTO(final String answer, final String question, Category category) {
+    public QuestionAnswerDTO(final String answer, final String question, final Category category) {
         this.question = question;
         this.answer = answer;
         this.category = category;
