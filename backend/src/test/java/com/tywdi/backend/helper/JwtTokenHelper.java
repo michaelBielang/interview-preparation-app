@@ -1,10 +1,8 @@
 package com.tywdi.backend.helper;
 
 import com.tywdi.backend.service.JwtTokenService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.stereotype.Component;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
@@ -18,13 +16,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
  * @version: java version "14" 2020-03-17
  */
 
-@Component
 public class JwtTokenHelper {
 
-    @Autowired
-    private JwtTokenService tokenService;
+    private static final JwtTokenService tokenService = new JwtTokenService("mySecret", 1);
 
-    public HttpHeaders withMail(final String email) {
+    public static HttpHeaders withMail(final String email) {
         HttpHeaders headers = new HttpHeaders();
         String token = tokenService.generateToken(email);
         headers.setContentType(APPLICATION_JSON);
@@ -32,7 +28,7 @@ public class JwtTokenHelper {
         return headers;
     }
 
-    public HttpEntity<?> withMailHeader(final String email) {
+    public static HttpEntity<?> withMailHeader(final String email) {
         HttpHeaders headers = new HttpHeaders();
         String token = tokenService.generateToken(email);
         headers.setContentType(APPLICATION_JSON);

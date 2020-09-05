@@ -23,13 +23,16 @@ public final class QuestionAnswerDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "QA_SEQ")
-    @SequenceGenerator(name = "QA_SEQ", sequenceName = "QA_SEQ", allocationSize = 100, initialValue = 100)
+    @SequenceGenerator(name = "QA_SEQ", sequenceName = "QA_SEQ", allocationSize = 1)
+    @JsonIgnore
     private Long id;
 
     @NotBlank(message = "Name is mandatory")
+    @Lob
     private String question;
 
     @NotBlank(message = "Name is mandatory")
+    @Lob
     private String answer;
 
     @Enumerated(EnumType.STRING)

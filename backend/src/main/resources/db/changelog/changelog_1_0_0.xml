@@ -6,6 +6,8 @@
     <!--    <property name="u_id" value="random_uuid()" dbms="h2"/>-->
 
     <changeSet author="michael.bielang" id="add_question">
+        <createSequence schemaName="public" startValue="1" incrementBy="1" ordered="true" sequenceName="qa_seq"/>
+
         <createTable tableName="question_answer">
             <!--<column name="id" type="uuid" defaultValueComputed="${u_id}">-->
             <column name="id" type="bigint" autoIncrement="true">

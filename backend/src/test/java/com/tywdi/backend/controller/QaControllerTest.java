@@ -1,18 +1,28 @@
 package com.tywdi.backend.controller;
 
+import com.arakelian.jackson.utils.JacksonUtils;
 import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
 import com.tywdi.backend.service.QaService;
+import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static com.tywdi.backend.helper.JwtTokenHelper.withMail;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -25,34 +35,85 @@ import static org.mockito.Mockito.*;
  */
 
 @ExtendWith(MockitoExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@AutoConfigureMockMvc
 class QaControllerTest {
 
     private static final String QUESTION = "testQuestion";
     private static final String ANSWER = "testAnswer";
     private static final QuestionAnswerDTO.Category CATEGORY = QuestionAnswerDTO.Category.BASIC;
+    private static final String QA_URL = "/api";
+    private static final String GENERATED_EMAIL = RandomString.make(10);
 
-    private final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(ANSWER, QUESTION, CATEGORY);
-    private final List<QuestionAnswerDTO> questionAnswerDTOList = List.of(questionAnswerDTO);
+    private static final QuestionAnswerDTO QUESTION_ANSWER_DTO = new QuestionAnswerDTO(ANSWER, QUESTION, CATEGORY);
 
-    @InjectMocks
-    private final QaController qaController = new QaController();
-    @Mock
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
     private QaService qaService;
 
     @Test
-    void getQuestions() {
-        when(qaService.getQaList()).thenReturn(questionAnswerDTOList);
+    void getQuestions() throws Exception {
+        when(qaService.getQaList()).thenReturn(List.of(QUESTION_ANSWER_DTO));
 
-        final QuestionAnswerDTO questionAnswerDTO = qaController.getQuestions().iterator().next();
-
-        assertThat(questionAnswerDTO.getQuestion()).isEqualTo(QUESTION);
-        assertThat(questionAnswerDTO.getAnswer()).isEqualTo(ANSWER);
+        mockMvc.perform(MockMvcRequestBuilders.get(QA_URL + "/questions")
+                .headers(withMail(GENERATED_EMAIL))
+                .contextPath(QA_URL)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].question").value(QUESTION))
+                .andExpect(jsonPath("$[0].answer").value(ANSWER))
+                .andExpect(jsonPath("$[0].category").value(CATEGORY.toString()))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void addNewQa() {
-        qaController.addNewQa(questionAnswerDTO);
+    void addNewQa() throws Exception {
+        when(qaService.addQa(eq(ANSWER), eq(QUESTION), eq(CATEGORY))).thenReturn(QUESTION_ANSWER_DTO);
 
-        verify(qaService, times(1)).addQa(ANSWER, QUESTION, CATEGORY);
+        mockMvc.perform(MockMvcRequestBuilders.post(QA_URL + "/question")
+                .headers(withMail(GENERATED_EMAIL))
+                .contextPath(QA_URL)
+                .content(JacksonUtils.toString(QUESTION_ANSWER_DTO, false))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.question").value(QUESTION))
+                .andExpect(jsonPath("$.answer").value(ANSWER))
+                .andExpect(jsonPath("$.category").value(CATEGORY.toString()))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    void updateQuestion() throws Exception {
+        final String newAnswer = "newAnswer";
+        final String newQuestion = "newQuestion";
+
+        final QuestionAnswerDTO updatedDTO = new QuestionAnswerDTO(newAnswer, newQuestion, CATEGORY);
+
+        when(qaService.updateQuestion(QUESTION_ANSWER_DTO, "1")).thenReturn(Optional.of(updatedDTO));
+
+        mockMvc.perform(MockMvcRequestBuilders.put(QA_URL + "/question/1")
+                .headers(withMail(GENERATED_EMAIL))
+                .contextPath(QA_URL)
+                .content(JacksonUtils.toString(QUESTION_ANSWER_DTO, false))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.question").value(newQuestion))
+                .andExpect(jsonPath("$.answer").value(newAnswer))
+                .andExpect(jsonPath("$.category").value(CATEGORY.toString()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void failUpdateQuestion() throws Exception {
+        when(qaService.updateQuestion(QUESTION_ANSWER_DTO, "1")).thenReturn(Optional.empty());
+
+        mockMvc.perform(MockMvcRequestBuilders.put(QA_URL + "/question/1")
+                .headers(withMail(GENERATED_EMAIL))
+                .contextPath(QA_URL)
+                .content(JacksonUtils.toString(QUESTION_ANSWER_DTO, false))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
