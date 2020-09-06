@@ -54,6 +54,22 @@ class QaControllerTest {
     private QaService qaService;
 
     @Test
+    void getQuestion() throws Exception {
+        final String id = "1";
+        when(qaService.getQuestion(id)).thenReturn(Optional.of(QUESTION_ANSWER_DTO));
+
+        mockMvc.perform(MockMvcRequestBuilders.get(QA_URL + "/question")
+                .headers(withMail(GENERATED_EMAIL))
+                .contextPath(QA_URL)
+                .param("id", id)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.question").value(QUESTION))
+                .andExpect(jsonPath("$.answer").value(ANSWER))
+                .andExpect(jsonPath("$.category").value(CATEGORY.toString()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void getQuestions() throws Exception {
         when(qaService.getQaList()).thenReturn(List.of(QUESTION_ANSWER_DTO));
 
@@ -87,12 +103,13 @@ class QaControllerTest {
     void updateQuestion() throws Exception {
         final String newAnswer = "newAnswer";
         final String newQuestion = "newQuestion";
+        final String id = "1";
 
         final QuestionAnswerDTO updatedDTO = new QuestionAnswerDTO(newAnswer, newQuestion, CATEGORY);
 
-        when(qaService.updateQuestion(QUESTION_ANSWER_DTO, "1")).thenReturn(Optional.of(updatedDTO));
+        when(qaService.updateQuestion(QUESTION_ANSWER_DTO, id)).thenReturn(Optional.of(updatedDTO));
 
-        mockMvc.perform(MockMvcRequestBuilders.put(QA_URL + "/question/1")
+        mockMvc.perform(MockMvcRequestBuilders.put(QA_URL + "/question/" + 1)
                 .headers(withMail(GENERATED_EMAIL))
                 .contextPath(QA_URL)
                 .content(JacksonUtils.toString(QUESTION_ANSWER_DTO, false))
@@ -106,12 +123,27 @@ class QaControllerTest {
 
     @Test
     void failUpdateQuestion() throws Exception {
-        when(qaService.updateQuestion(QUESTION_ANSWER_DTO, "1")).thenReturn(Optional.empty());
+        final String id = "1";
+        when(qaService.updateQuestion(QUESTION_ANSWER_DTO, id)).thenReturn(Optional.empty());
 
-        mockMvc.perform(MockMvcRequestBuilders.put(QA_URL + "/question/1")
+        mockMvc.perform(MockMvcRequestBuilders.put(QA_URL + "/question/{id}", id)
                 .headers(withMail(GENERATED_EMAIL))
                 .contextPath(QA_URL)
                 .content(JacksonUtils.toString(QUESTION_ANSWER_DTO, false))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void failGetQuestion() throws Exception {
+        final String id = "1";
+        when(qaService.updateQuestion(QUESTION_ANSWER_DTO, id)).thenReturn(Optional.empty());
+
+        mockMvc.perform(MockMvcRequestBuilders.get(QA_URL + "/question")
+                .param("id", id)
+                .headers(withMail(GENERATED_EMAIL))
+                .contextPath(QA_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());

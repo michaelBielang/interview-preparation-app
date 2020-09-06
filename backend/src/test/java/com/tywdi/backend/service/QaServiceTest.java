@@ -37,6 +37,7 @@ class QaServiceTest {
     @Mock
     private QaRepository qaRepository;
 
+    // this class shows a use case for ArgumentCaptors. In a real application you want to use the QaServiceIntegrationTest
     @Test
     void addQa() {
         qaService.addQa(ANSWER, QUESTION, CATEGORY);

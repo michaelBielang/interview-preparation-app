@@ -8,7 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,6 +45,28 @@ class QaServiceIntegrationTest {
     void addQa() {
         final Long id = qaService.addQa(ANSWER, QUESTION, CATEGORY).getId();
         assertThat(qaService.getQuestion(id.toString())).isNotNull();
+    }
+
+    //positive case
+    @Test
+    void getQa() {
+        final QuestionAnswerDTO insertedQA = qaService.addQa(ANSWER, QUESTION, CATEGORY);
+        final Optional<QuestionAnswerDTO> questionAnswerFromService = qaService
+                .getQuestion(String.valueOf(insertedQA.getId()));
+
+        assertThat(questionAnswerFromService.isPresent()).isTrue();
+    }
+
+    //positive case
+    @Test
+    void getQuestions() {
+        qaService.addQa(ANSWER, QUESTION, CATEGORY);
+
+        final List<QuestionAnswerDTO> answerDTOList = StreamSupport
+                .stream(qaService.getQaList().spliterator(), false)
+                .collect(Collectors.toList());
+
+        assertThat(answerDTOList.size()).isEqualTo(1);
     }
 
     //positive case
