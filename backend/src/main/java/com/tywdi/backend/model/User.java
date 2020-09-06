@@ -9,7 +9,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -50,7 +49,7 @@ public class User implements UserDetails {
         //dflt ctor for hibernate
     }
 
-    public User(final String username, @Email final String email, final String password, final Role role) {
+    public User(final String username, final String email, final String password, final Role role) {
         this.username = username;
         this.password = password;
         this.email = email;

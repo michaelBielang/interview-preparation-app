@@ -4,7 +4,6 @@ import com.tywdi.backend.model.DTO.AuthenticationRequest;
 import com.tywdi.backend.model.DTO.JwtTokenResponse;
 import com.tywdi.backend.model.User;
 import com.tywdi.backend.service.AuthenticationService;
-import com.tywdi.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -31,14 +31,12 @@ import javax.validation.constraints.NotBlank;
 public class LoginController {
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtTokenResponse> createCustomer(@RequestBody AuthenticationRequest request) {
-        return new ResponseEntity<>(authenticationService.generateJWTToken(request.getEmail(), request.getPassword()), HttpStatus.OK);
+    public ResponseEntity<JwtTokenResponse> login(@RequestBody @Valid AuthenticationRequest request) {
+        return new ResponseEntity<>(authenticationService.generateJWTToken(request.getEmail(), request.getPassword()),
+                HttpStatus.CREATED);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
