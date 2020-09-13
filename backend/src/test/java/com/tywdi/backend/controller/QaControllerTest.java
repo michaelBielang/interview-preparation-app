@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,12 +91,17 @@ class QaControllerTest {
                 .andReturn();
 
         // variant 2
-        final QuestionAnswerDTO responseDTO = new ObjectMapper()
-                .readValue(mvcResult.getResponse().getContentAsString(), QuestionAnswerDTO[].class)[0];
+        final QuestionAnswerDTO responseDTO = extractDTOFromResponse(mvcResult);
 
         assertThat(responseDTO.getAnswer()).isEqualTo(ANSWER);
         assertThat(responseDTO.getQuestion()).isEqualTo(QUESTION);
         assertThat(responseDTO.getCategory()).isEqualTo(CATEGORY);
+    }
+
+    private QuestionAnswerDTO extractDTOFromResponse(MvcResult mvcResult) throws com.fasterxml.jackson.core.JsonProcessingException, UnsupportedEncodingException {
+        final QuestionAnswerDTO responseDTO = new ObjectMapper()
+                .readValue(mvcResult.getResponse().getContentAsString(), QuestionAnswerDTO[].class)[0];
+        return responseDTO;
     }
 
     @Test
@@ -124,7 +130,7 @@ class QaControllerTest {
 
         when(qaService.updateQuestion(QUESTION_ANSWER_DTO, id)).thenReturn(Optional.of(updatedDTO));
 
-        mockMvc.perform(MockMvcRequestBuilders.put(QA_URL + "/question/" + 1)
+        mockMvc.perform(MockMvcRequestBuilders.put(QA_URL + QUESTION_PATH + "/1")
                 .headers(withMail(GENERATED_EMAIL))
                 .contextPath(QA_URL)
                 .content(JacksonUtils.toString(QUESTION_ANSWER_DTO, false))
@@ -141,7 +147,7 @@ class QaControllerTest {
         final String id = "1";
         when(qaService.updateQuestion(QUESTION_ANSWER_DTO, id)).thenReturn(Optional.empty());
 
-        mockMvc.perform(MockMvcRequestBuilders.put(QA_URL + "/question/{id}", id)
+        mockMvc.perform(MockMvcRequestBuilders.put(QA_URL + QUESTION_PATH + "/{id}", id)
                 .headers(withMail(GENERATED_EMAIL))
                 .contextPath(QA_URL)
                 .content(JacksonUtils.toString(QUESTION_ANSWER_DTO, false))
@@ -166,7 +172,7 @@ class QaControllerTest {
 
     @Test
     void addQuestionWithValidationFail() throws Exception {
-        final QuestionAnswerDTO wrongQA = new QuestionAnswerDTO("", "question", QuestionAnswerDTO.Category.BASIC);
+        final QuestionAnswerDTO wrongQA = new QuestionAnswerDTO("", QUESTION, QuestionAnswerDTO.Category.BASIC);
 
         mockMvc.perform(MockMvcRequestBuilders.post(QA_URL + QUESTION_PATH)
                 .accept(MediaType.APPLICATION_JSON)
@@ -178,7 +184,7 @@ class QaControllerTest {
                 .andExpect(status()
                         .isBadRequest());
 
-        final QuestionAnswerDTO wrongQA_2 = new QuestionAnswerDTO("answer", "", QuestionAnswerDTO.Category.BASIC);
+        final QuestionAnswerDTO wrongQA_2 = new QuestionAnswerDTO(ANSWER, "", QuestionAnswerDTO.Category.BASIC);
 
         mockMvc.perform(MockMvcRequestBuilders.post(QA_URL + QUESTION_PATH)
                 .accept(MediaType.APPLICATION_JSON)

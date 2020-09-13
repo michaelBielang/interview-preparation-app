@@ -40,7 +40,7 @@ public class ControllerExceptionHandler {
         return new ErrorMsg(ex.getMessage());
     }
 
-    @Data
+    @Data //getter required for jackson
     static class ErrorMsg {
 
         private final String reason;
