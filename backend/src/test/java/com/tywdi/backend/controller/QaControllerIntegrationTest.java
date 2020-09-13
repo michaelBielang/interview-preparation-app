@@ -27,7 +27,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
  * @version: java version "14" 2020-03-17
  */
 
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+
+@SpringBootTest(webEnvironment = RANDOM_PORT) // TestRestTemplate only works with an webEnv. set
 public class QaControllerIntegrationTest {
 
     private static final String GENERATED_EMAIL = RandomString.make(10);
