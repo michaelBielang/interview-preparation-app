@@ -1,5 +1,6 @@
 package com.tywdi.backend.configuration;
 
+import com.tywdi.backend.exceptionhandler.FilterChainExceptionHandler;
 import com.tywdi.backend.security.JwtAuthenticationEntryPoint;
 import com.tywdi.backend.security.JwtAuthenticationProvider;
 import com.tywdi.backend.security.JwtAuthenticationTokenFilter;
@@ -14,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 /**
  * Created by Michael Bielang on 19.07.2018.
@@ -30,6 +32,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
+
+    @Autowired
+    private FilterChainExceptionHandler filterChainExceptionHandler;
 
     @Autowired
     public SecurityConfiguration(JwtAuthenticationEntryPoint unauthorizedHandler,
@@ -64,6 +69,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         httpSecurity
                 .csrf().disable()
+                .addFilterBefore(filterChainExceptionHandler, LogoutFilter.class)
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()

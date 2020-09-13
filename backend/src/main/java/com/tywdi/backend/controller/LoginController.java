@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
@@ -37,11 +36,6 @@ public class LoginController {
     public ResponseEntity<JwtTokenResponse> login(@RequestBody @Valid AuthenticationRequest request) {
         return new ResponseEntity<>(authenticationService.generateJWTToken(request.getEmail(), request.getPassword()),
                 HttpStatus.CREATED);
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     // TODO - michael.bielang: 01.09.2020 follow up implementation for session based implementation
