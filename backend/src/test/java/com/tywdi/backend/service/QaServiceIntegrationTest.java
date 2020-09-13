@@ -2,10 +2,8 @@ package com.tywdi.backend.service;
 
 import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -25,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @version: java version "14" 2020-03-17
  */
 
-@ExtendWith(SpringExtension.class)
 @Transactional
 @SpringBootTest
 class QaServiceIntegrationTest {

@@ -3,10 +3,8 @@ package com.tywdi.backend.service;
 import com.tywdi.backend.model.Enums.Role;
 import com.tywdi.backend.model.User;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -22,8 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author: Michael Bielang, b137ang@codemerger.com.
  * @version: java version "14" 2020-03-17
  */
-
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
 class UserIntegrationTest {

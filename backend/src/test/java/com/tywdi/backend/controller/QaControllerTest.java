@@ -39,14 +39,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class QaControllerTest {
 
+    private static final String QUESTION_PATH = "/question";
     private static final String QUESTION = "testQuestion";
     private static final String ANSWER = "testAnswer";
     private static final QuestionAnswerDTO.Category CATEGORY = QuestionAnswerDTO.Category.BASIC;
     private static final String QA_URL = "/api";
     private static final String GENERATED_EMAIL = RandomString.make(10);
-
     private static final QuestionAnswerDTO QUESTION_ANSWER_DTO = new QuestionAnswerDTO(ANSWER, QUESTION, CATEGORY);
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -58,7 +57,7 @@ class QaControllerTest {
         final String id = "1";
         when(qaService.getQuestion(id)).thenReturn(Optional.of(QUESTION_ANSWER_DTO));
 
-        mockMvc.perform(MockMvcRequestBuilders.get(QA_URL + "/question")
+        mockMvc.perform(MockMvcRequestBuilders.get(QA_URL + QUESTION_PATH)
                 .headers(withMail(GENERATED_EMAIL))
                 .contextPath(QA_URL)
                 .param("id", id)
@@ -87,7 +86,7 @@ class QaControllerTest {
     void addNewQa() throws Exception {
         when(qaService.addQa(eq(ANSWER), eq(QUESTION), eq(CATEGORY))).thenReturn(QUESTION_ANSWER_DTO);
 
-        mockMvc.perform(MockMvcRequestBuilders.post(QA_URL + "/question")
+        mockMvc.perform(MockMvcRequestBuilders.post(QA_URL + QUESTION_PATH)
                 .headers(withMail(GENERATED_EMAIL))
                 .contextPath(QA_URL)
                 .content(JacksonUtils.toString(QUESTION_ANSWER_DTO, false))
@@ -136,16 +135,43 @@ class QaControllerTest {
     }
 
     @Test
-    void failGetQuestion() throws Exception {
+    void failQuestionNotAvailable() throws Exception {
         final String id = "1";
         when(qaService.updateQuestion(QUESTION_ANSWER_DTO, id)).thenReturn(Optional.empty());
 
-        mockMvc.perform(MockMvcRequestBuilders.get(QA_URL + "/question")
+        mockMvc.perform(MockMvcRequestBuilders.get(QA_URL + QUESTION_PATH)
                 .param("id", id)
                 .headers(withMail(GENERATED_EMAIL))
                 .contextPath(QA_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void addQuestionWithValidationFail() throws Exception {
+        final QuestionAnswerDTO wrongQA = new QuestionAnswerDTO("", "question", QuestionAnswerDTO.Category.BASIC);
+
+        mockMvc.perform(MockMvcRequestBuilders.post(QA_URL + QUESTION_PATH)
+                .accept(MediaType.APPLICATION_JSON)
+                .headers(withMail(GENERATED_EMAIL))
+                .contextPath(QA_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_STREAM_JSON)
+                .content(JacksonUtils.toString(wrongQA, false)))
+                .andExpect(status()
+                        .isBadRequest());
+
+        final QuestionAnswerDTO wrongQA_2 = new QuestionAnswerDTO("answer", "", QuestionAnswerDTO.Category.BASIC);
+
+        mockMvc.perform(MockMvcRequestBuilders.post(QA_URL + QUESTION_PATH)
+                .accept(MediaType.APPLICATION_JSON)
+                .headers(withMail(GENERATED_EMAIL))
+                .contextPath(QA_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_STREAM_JSON)
+                .content(JacksonUtils.toString(wrongQA_2, false)))
+                .andExpect(status()
+                        .isBadRequest());
     }
 }

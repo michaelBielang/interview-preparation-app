@@ -3,7 +3,6 @@ package com.tywdi.backend.controller;
 import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -11,7 +10,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
@@ -29,7 +27,6 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
  * @version: java version "14" 2020-03-17
  */
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 public class QaControllerIntegrationTest {
 

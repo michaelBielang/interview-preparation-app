@@ -3,16 +3,15 @@ package com.tywdi.backend.controller;
 import com.arakelian.jackson.utils.JacksonUtils;
 import com.tywdi.backend.model.DTO.AuthenticationRequest;
 import com.tywdi.backend.model.DTO.JwtTokenResponse;
+import com.tywdi.backend.security.JwtAuthenticationEntryPoint;
+import com.tywdi.backend.security.JwtAuthenticationProvider;
 import com.tywdi.backend.service.AuthenticationService;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -32,9 +31,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @version: java version "14" 2020-03-17
  */
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
+// context version, heavy
+// @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+// @AutoConfigureMockMvc
+
+//light version
+@WebMvcTest(controllers = LoginController.class)
 class LoginControllerTest {
 
     private static final String EMAIL = "test@mail.de";
@@ -42,12 +44,14 @@ class LoginControllerTest {
     private static final String API_URL = "/api";
     private static final String LOGIN_PATH = "/login";
     private static final String TOKEN = "123456";
-
+    @MockBean
+    JwtAuthenticationProvider JwtAuthenticationProvider;
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private AuthenticationService authenticationService;
+    @MockBean
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Test
     void login() throws Exception {
