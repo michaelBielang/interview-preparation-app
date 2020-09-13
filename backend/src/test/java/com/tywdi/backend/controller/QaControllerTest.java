@@ -44,8 +44,10 @@ class QaControllerTest {
     private static final String ANSWER = "testAnswer";
     private static final QuestionAnswerDTO.Category CATEGORY = QuestionAnswerDTO.Category.BASIC;
     private static final String QA_URL = "/api";
-    private static final String GENERATED_EMAIL = RandomString.make(10);
-    private static final QuestionAnswerDTO QUESTION_ANSWER_DTO = new QuestionAnswerDTO(ANSWER, QUESTION, CATEGORY);
+
+    private final String GENERATED_EMAIL = RandomString.make(10);
+    private final QuestionAnswerDTO QUESTION_ANSWER_DTO = new QuestionAnswerDTO(ANSWER, QUESTION, CATEGORY);
+
     @Autowired
     private MockMvc mockMvc;
 
