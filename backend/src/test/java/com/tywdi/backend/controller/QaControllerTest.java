@@ -1,6 +1,7 @@
 package com.tywdi.backend.controller;
 
 import com.arakelian.jackson.utils.JacksonUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
 import com.tywdi.backend.service.QaService;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
@@ -13,12 +14,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 import java.util.Optional;
 
 import static com.tywdi.backend.helper.JwtTokenHelper.withMail;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -74,14 +77,25 @@ class QaControllerTest {
     void getQuestions() throws Exception {
         when(qaService.getQaList()).thenReturn(List.of(QUESTION_ANSWER_DTO));
 
-        mockMvc.perform(MockMvcRequestBuilders.get(QA_URL + "/questions")
+        final MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(QA_URL + "/questions")
                 .headers(withMail(GENERATED_EMAIL))
                 .contextPath(QA_URL)
                 .accept(MediaType.APPLICATION_JSON))
+
+                // variant 1
                 .andExpect(jsonPath("$[0].question").value(QUESTION))
                 .andExpect(jsonPath("$[0].answer").value(ANSWER))
                 .andExpect(jsonPath("$[0].category").value(CATEGORY.toString()))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn();
+
+        // variant 2
+        final QuestionAnswerDTO responseDTO = new ObjectMapper()
+                .readValue(mvcResult.getResponse().getContentAsString(), QuestionAnswerDTO[].class)[0];
+
+        assertThat(responseDTO.getAnswer()).isEqualTo(ANSWER);
+        assertThat(responseDTO.getQuestion()).isEqualTo(QUESTION);
+        assertThat(responseDTO.getCategory()).isEqualTo(CATEGORY);
     }
 
     @Test

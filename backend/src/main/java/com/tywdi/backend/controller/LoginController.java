@@ -28,6 +28,7 @@ import javax.validation.constraints.NotBlank;
 
 @RestController
 @Validated
+@ControllerAdvice
 public class LoginController {
 
     @Autowired
