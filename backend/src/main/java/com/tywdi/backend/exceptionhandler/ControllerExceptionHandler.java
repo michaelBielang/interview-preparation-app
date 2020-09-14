@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -27,7 +28,7 @@ import javax.persistence.EntityNotFoundException;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex) {
+    public ResponseEntity<String> handleEntityNotFoundException(final EntityNotFoundException ex) {
         log.error(ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
@@ -35,8 +36,11 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(SignatureException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ErrorMsg handleSignatureException(SignatureException ex) {
-        log.error(ex.getMessage());
+    public ErrorMsg handleSignatureException(final SignatureException ex, final WebRequest webRequest) {
+
+        log.error("error fetching for user {} with error {} with parameters {}",
+                webRequest.getHeader("authorization"), ex.getMessage(), webRequest.getParameterMap());
+
         return new ErrorMsg(ex.getMessage());
     }
 
