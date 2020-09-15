@@ -22,6 +22,7 @@ import java.util.Optional;
 import static com.tywdi.backend.helper.JwtTokenHelper.withMail;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,7 +37,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @version: java version "14" 2020-03-17
  */
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+// allows to uses @Transactional because dft env. == MOCk
+// https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-testing.html
+
+@SpringBootTest
 @AutoConfigureMockMvc
 class QaControllerTest {
 
@@ -69,6 +73,9 @@ class QaControllerTest {
                 .andExpect(jsonPath("$.answer").value(ANSWER))
                 .andExpect(jsonPath("$.category").value(CATEGORY.toString()))
                 .andExpect(status().isOk());
+
+        // unnecessary, present for completion
+        verify(qaService).getQuestion(id);
     }
 
     @Test

@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import javax.persistence.EntityNotFoundException;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @version: java version "14" 2020-03-17
  */
 
-// context version, heavy
+// full context version, heavy
 // @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 // @AutoConfigureMockMvc
 
@@ -67,6 +68,9 @@ class LoginControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.token").value(TOKEN))
                 .andExpect(status().isCreated());
+
+        // unnecessary, present for completion
+        verify(authenticationService).generateJWTToken(EMAIL, PASSWORD);
     }
 
     @Test

@@ -69,7 +69,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         httpSecurity
                 .csrf().disable()
-                .addFilterBefore(filterChainExceptionHandler, LogoutFilter.class)
+                .addFilterBefore(filterChainExceptionHandler, LogoutFilter.class) // for controller exception handler
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
