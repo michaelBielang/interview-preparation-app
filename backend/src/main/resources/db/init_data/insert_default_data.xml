@@ -7,6 +7,7 @@
         <insert tableName="question_answer">
             <column name="answer" value="Java is a high-level programming language and is platform independent."/>
             <column name="question" value="What is JAVA?"/>
+            <column name="category" value="BASIC"/>
         </insert>
         <insert tableName="question_answer">
             <column name="answer">
@@ -19,6 +20,7 @@
                     The user can create multiple threads by extending the thread class or by implementing Runnable interface.]]>
             </column>
             <column name="question" value="Features of Java"/>
+            <column name="category" value="BASIC"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

@@ -1,11 +1,9 @@
 package com.tywdi.backend.repository;
 
 import com.tywdi.backend.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 /**
