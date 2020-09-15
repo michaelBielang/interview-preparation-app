@@ -27,7 +27,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter implements SecurityConfigurationInt {
 
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
@@ -43,23 +43,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         this.jwtAuthenticationProvider = jwtAuthenticationProvider;
     }
 
+    @Override
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    @Override
     @Autowired
     public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) {
         authenticationManagerBuilder.authenticationProvider(jwtAuthenticationProvider);
     }
 
+    @Override
     @Bean
     public JwtAuthenticationTokenFilter authenticationTokenFilterBean() {
         return new JwtAuthenticationTokenFilter();
     }
 
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
+    public void configure(HttpSecurity httpSecurity) throws Exception {
 /*
         httpSecurity
                 .csrf().disable()

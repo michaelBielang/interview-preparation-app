@@ -27,7 +27,7 @@ import javax.validation.constraints.NotBlank;
 
 @RestController
 @Validated
-public class UserController {
+public class UserController implements UserControllerInterface {
 
     @Autowired
     private UserService userService;
@@ -36,6 +36,7 @@ public class UserController {
     private JwtTokenService jwtTokenService;
 
 
+    @Override
     @PostMapping(value = "/register")
     @ResponseStatus(HttpStatus.CREATED)
     public JwtTokenResponse addUser(@RequestParam("username") @NotBlank final String username,
@@ -50,6 +51,7 @@ public class UserController {
     }
 
 
+    @Override
     @PutMapping(value = "user/{id}")
     @ResponseStatus(HttpStatus.OK)
     public User updateUser(@RequestParam("password") @Length(min = 5) final String password,

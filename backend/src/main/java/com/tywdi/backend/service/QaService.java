@@ -20,25 +20,29 @@ import java.util.Optional;
  */
 
 @Service
-public class QaService {
+public class QaService implements QaServiceInterface {
 
     @Autowired
     private QaRepository qaRepository;
 
+    @Override
     @Transactional
     public QuestionAnswerDTO addQa(final String answer, final String question, final QuestionAnswerDTO.Category category) {
         final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(answer, question, category);
         return qaRepository.save(questionAnswerDTO);
     }
 
+    @Override
     public Iterable<QuestionAnswerDTO> getQaList() {
         return qaRepository.findAll();
     }
 
+    @Override
     public Optional<QuestionAnswerDTO> getQuestion(final String id) {
         return qaRepository.findById(Long.parseLong(id));
     }
 
+    @Override
     @Transactional
     public Optional<QuestionAnswerDTO> updateQuestion(final QuestionAnswerDTO updatedQAV, final String id) {
         Optional<QuestionAnswerDTO> optionalQuestionAnswerDTO = qaRepository.findById(Long.parseLong(id));

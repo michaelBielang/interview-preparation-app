@@ -6,7 +6,6 @@ import com.tywdi.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ import static org.springframework.security.core.userdetails.User.withUsername;
  */
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService implements UserServiceInterface {
 
     @Autowired
     private UserRepository userRepository;
@@ -36,14 +35,12 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Override
     public Optional<User> getUser(final String email, final String password) {
         return userRepository.getUserByEmail(email);
     }
 
-    public boolean verifyPassword(final String enteredPassword, final String storedPassword) {
-        return passwordEncoder.matches(enteredPassword, storedPassword);
-    }
-
+    @Override
     public Optional<User> updateUser(final String username, final String password, final String email) {
         final User user = userRepository
                 .getUserByEmail(email)
@@ -52,6 +49,7 @@ public class UserService implements UserDetailsService {
         // TODO: 17.08.2020
     }
 
+    @Override
     @Transactional
     public Optional<User> addUser(final String username, final String password, final String email, final Role role) {
 
@@ -79,7 +77,8 @@ public class UserService implements UserDetailsService {
         return Optional.of(userRepository.save(user));
     }*/
 
-    private String generatedEncodedPassword(final String password) {
+    @Override
+    public String generatedEncodedPassword(final String password) {
         String hashedPassword = passwordEncoder.encode(password);
         int counter = 0;
         while (passwordEncoder.upgradeEncoding(hashedPassword) && counter < 5) {

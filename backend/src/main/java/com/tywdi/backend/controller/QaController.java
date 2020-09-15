@@ -21,28 +21,32 @@ import javax.validation.Valid;
  */
 
 @RestController
-public final class QaController {
+public final class QaController implements QaControllerInterface {
 
     @Autowired
     private QaService qaService;
 
+    @Override
     @GetMapping(value = "/questions")
     public Iterable<QuestionAnswerDTO> getQuestions() {
         return qaService.getQaList();
     }
 
+    @Override
     @GetMapping(value = "/question")
     public QuestionAnswerDTO getQuestion(@RequestParam("id") final String id) {
         return qaService.getQuestion(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not present"));
     }
 
+    @Override
     @PostMapping(value = "/question")
     @ResponseStatus(HttpStatus.CREATED)
     public QuestionAnswerDTO addNewQa(@RequestBody @Valid final QuestionAnswerDTO questionAnswerDTO) {
         return qaService.addQa(questionAnswerDTO.getAnswer(), questionAnswerDTO.getQuestion(), questionAnswerDTO.getCategory());
     }
 
+    @Override
     @PutMapping(value = "question/{id}")
     public QuestionAnswerDTO updateQuestion(@RequestBody @Valid final QuestionAnswerDTO updatedQAV, @PathVariable final String id) {
         return qaService.updateQuestion(updatedQAV, id)

@@ -27,11 +27,12 @@ import javax.validation.constraints.NotBlank;
 
 @RestController
 @Validated
-public class LoginController {
+public class LoginController implements LoginControllerInterface {
 
     @Autowired
     private AuthenticationService authenticationService;
 
+    @Override
     @PostMapping("/login")
     public ResponseEntity<JwtTokenResponse> login(@RequestBody @Valid AuthenticationRequest request) {
         return new ResponseEntity<>(authenticationService.generateJWTToken(request.getEmail(), request.getPassword()),
@@ -39,6 +40,7 @@ public class LoginController {
     }
 
     // TODO - michael.bielang: 01.09.2020 follow up implementation for session based implementation
+    @Override
     @GetMapping
     public User getUser(@RequestParam("email") @NotBlank @Email final String email,
                         @RequestParam("password") @NotBlank @Min(5) final String password) {

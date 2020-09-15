@@ -1,7 +1,6 @@
 package com.tywdi.backend.exceptionhandler;
 
 import io.jsonwebtoken.SignatureException;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,14 +24,16 @@ import javax.persistence.EntityNotFoundException;
 
 @Slf4j
 @ControllerAdvice
-public class ControllerExceptionHandler {
+public class ControllerExceptionHandler implements ControllerExceptionHandlerInterface {
 
+    @Override
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleEntityNotFoundException(final EntityNotFoundException ex) {
         log.error(ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @Override
     @ExceptionHandler(SignatureException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
@@ -44,9 +45,4 @@ public class ControllerExceptionHandler {
         return new ErrorMsg(ex.getMessage());
     }
 
-    @Data //getter required for jackson
-    static class ErrorMsg {
-
-        private final String reason;
-    }
 }

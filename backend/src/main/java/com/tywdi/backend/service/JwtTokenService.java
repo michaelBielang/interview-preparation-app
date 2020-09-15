@@ -25,7 +25,7 @@ import java.util.function.Function;
 
 @Service
 @PropertySource("classpath:application.properties")
-public class JwtTokenService {
+public class JwtTokenService implements JwtTokenServiceInterface {
 
     private final String secret;
 
@@ -37,26 +37,31 @@ public class JwtTokenService {
         this.expirationInHours = expirationInHours;
     }
 
+    @Override
     public String getUsernameFromToken(final String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
+    @Override
     public Date getExpirationDateFromToken(final String token) {
         return getClaimFromToken(token, Claims::getExpiration);
     }
 
+    @Override
     public <T> T getClaimFromToken(final String token, final Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
 
-    private Claims getAllClaimsFromToken(final String token) {
+    @Override
+    public Claims getAllClaimsFromToken(final String token) {
         return Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
     }
 
+    @Override
     public String generateToken(final String email) {
         final Date createdDate = new Date();
         final Date expirationDate = calculateExpirationDate();
@@ -70,20 +75,24 @@ public class JwtTokenService {
                 .compact();
     }
 
-    private Date localDateTimeToDate(final LocalDateTime localDateTime) {
+    @Override
+    public Date localDateTimeToDate(final LocalDateTime localDateTime) {
         return java.sql.Timestamp.valueOf(localDateTime);
     }
 
-    private Boolean isTokenNotExpired(final String token) {
+    @Override
+    public Boolean isTokenNotExpired(final String token) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.after(new Date());
     }
 
+    @Override
     public Optional<Boolean> validateToken(final String token) {
         return isTokenNotExpired(token) ? Optional.of(Boolean.TRUE) : Optional.empty();
     }
 
-    private Date calculateExpirationDate() {
+    @Override
+    public Date calculateExpirationDate() {
         return localDateTimeToDate(LocalDateTime
                 .now()
                 .plusHours(expirationInHours));

@@ -28,6 +28,4 @@ public class AuthenticationRequest {
         this.email = email;
         this.password = password;
     }
-
-
 }

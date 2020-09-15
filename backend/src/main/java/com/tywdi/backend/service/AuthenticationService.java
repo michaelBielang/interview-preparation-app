@@ -19,7 +19,7 @@ import javax.persistence.EntityNotFoundException;
  */
 
 @Service
-public class AuthenticationService {
+public class AuthenticationService implements AuthenticationServiceInterface {
 
     @Autowired
     private UserRepository userRepository;
@@ -31,6 +31,7 @@ public class AuthenticationService {
     private PasswordEncoder passwordEncoder;
 
 
+    @Override
     public JwtTokenResponse generateJWTToken(final String email, final String password) {
         return userRepository.getUserByEmail(email)
                 .filter(account -> passwordEncoder.matches(password, account.getPassword()))

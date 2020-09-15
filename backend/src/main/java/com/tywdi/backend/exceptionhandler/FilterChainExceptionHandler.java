@@ -23,14 +23,14 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 @Slf4j
-public class FilterChainExceptionHandler extends OncePerRequestFilter {
+public class FilterChainExceptionHandler extends OncePerRequestFilter implements FilterChainExceptionHandlerInterface {
 
     @Autowired
     @Qualifier("handlerExceptionResolver")
     private HandlerExceptionResolver resolver;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
 
         try {
             filterChain.doFilter(request, response);
