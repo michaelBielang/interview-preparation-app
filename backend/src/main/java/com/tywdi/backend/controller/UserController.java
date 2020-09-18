@@ -37,6 +37,7 @@ public class UserController implements UserControllerInterface {
 
 
     @Override
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "/register")
     @ResponseStatus(HttpStatus.CREATED)
     public JwtTokenResponse addUser(@RequestParam("username") @NotBlank final String username,

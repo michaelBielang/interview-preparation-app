@@ -70,7 +70,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                 .anyRequest().permitAll();
 */
 
-        httpSecurity
+        httpSecurity.cors().and()
                 .csrf().disable()
                 .addFilterBefore(filterChainExceptionHandler, LogoutFilter.class) // for controller exception handler
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
