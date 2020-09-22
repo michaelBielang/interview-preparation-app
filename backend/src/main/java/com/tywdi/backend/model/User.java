@@ -26,9 +26,11 @@ import java.util.List;
 @Data
 public class User implements UserDetails {
 
+    // TODO - michael.bielang: 22.09.2020 make sequence possible for both env.
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
-    @SequenceGenerator(allocationSize = 1, sequenceName = "USER_SEQ", name = "USER_SEQ")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+/*    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
+    @SequenceGenerator(allocationSize = 1, sequenceName = "USER_SEQ", name = "USER_SEQ")*/
     private Long id;
 
     @NaturalId

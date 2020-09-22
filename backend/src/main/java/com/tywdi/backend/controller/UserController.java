@@ -35,7 +35,6 @@ public class UserController implements UserControllerInterface {
     @Autowired
     private JwtTokenService jwtTokenService;
 
-
     @Override
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "/register")

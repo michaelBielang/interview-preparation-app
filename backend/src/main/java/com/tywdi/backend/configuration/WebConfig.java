@@ -18,7 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
-@Profile(value = "prod")
+@Profile("mysql, h2")
 public class WebConfig implements WebMvcConfigurer {
 
     @Override

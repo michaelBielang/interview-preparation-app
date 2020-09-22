@@ -21,9 +21,11 @@ import javax.validation.constraints.NotBlank;
 @Data
 public final class QuestionAnswerDTO {
 
+    // TODO - michael.bielang: 22.09.2020 make sequence possible for both env.
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "QA_SEQ")
-    @SequenceGenerator(name = "QA_SEQ", sequenceName = "QA_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+/*    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "QA_SEQ")
+    @SequenceGenerator(name = "QA_SEQ", sequenceName = "QA_SEQ", allocationSize = 1)*/
     @JsonIgnore
     private Long id;
 

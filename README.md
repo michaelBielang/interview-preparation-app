@@ -17,11 +17,31 @@ These are commonly asked questions, which make sometimes more or less sense in t
 
  * [x] Backend with Spring Boot and Java 14
  * [x] JWT Auth.
- * [x] Angular & React frontend
- * [x] H2 DB with liquibase
- * [x] Tests; backend and frontend
- * [x] A set of questions/answers
+ * [x] Angular
+ * [x] H2/MySQL DB with liquibase
+ * [x] Tests
+ * [x] A basic set of questions/answers
  
 ## Todos for further versions
 
  - Implement React on another microservice instant to offer two different UIs for the same backend
+
+## Installation
+
+* Docker CE/EE with Hyper-V
+* Java 14
+* If you use Windows 10 Pro ensure WSL2 is installed https://docs.microsoft.com/en-us/windows/wsl/install-win10
+
+## Execute
+
+##### Run Docker container with docker profile set in Dockerfile and migration scripts on host
+
+``
+docker run  --detach   --name internal-mysql -p 6604:3306 -e MYSQL_ROOT_PASSWORD=user_pass -e MYSQL_DATABASE=internal -e MYSQL_USER=user -e MYSQL_PASSWORD=user_pass mysql``
+``
+
+##### Interact with Database (link to ec-mysql container) with mysql client
+``
+docker run -it --link internal-mysql:mysql --rm mysql sh -c 'exec mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD"'
+``
+

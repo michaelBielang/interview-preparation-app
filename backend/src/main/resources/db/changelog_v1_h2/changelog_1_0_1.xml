@@ -5,7 +5,6 @@
 
     <changeSet author="michael.bielang" id="add_user">
         <createSequence schemaName="public" startValue="1" incrementBy="1" ordered="true" sequenceName="user_seq"/>
-
         <createTable tableName="user">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
