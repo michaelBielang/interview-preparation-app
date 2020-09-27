@@ -8,7 +8,7 @@ In the end you will have an app which you can use with a provided collection of 
 
 These you can use and extend to prepare for interviews. 
 
-These are commonly asked questions, which make sometimes more or less sense in the dailys business ;)
+These are commonly asked questions, which sometimes make more or less sense in the daily business ;)
 ## App 
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)]()
