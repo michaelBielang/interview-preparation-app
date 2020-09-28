@@ -1,23 +1,13 @@
-<mat-card class="register-box">
+<mat-card class="login-box">
   <div fxLayout="column" fxLayoutAlign="space-around center">
     <mat-card-header>
-      <mat-card-title>Register</mat-card-title>
+      <mat-card-title>Login</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
-      <form #f="ngForm" *ngIf="!isSuccessful" fxLayout="row" name="form">
+      <form #f="ngForm" *ngIf="!isLoggedIn" fxLayout="row" name="form">
         <div class="form-group">
           <table>
-            <tr>
-              <td>
-                <mat-form-field>
-                  <label>
-                    <input [(ngModel)]="form.username" matInput name="username" placeholder="username"
-                           required type="text">
-                  </label>
-                </mat-form-field>
-              </td>
-            </tr>
             <tr>
               <td>
                 <mat-form-field>
@@ -43,12 +33,12 @@
           </table>
         </div>
       </form>
-      <h3 *ngIf="isSuccessful">Registration completed</h3>
-      <h2 *ngIf="isSignUpFailed">{{errorMessage}}</h2>
+      <h3 *ngIf="isLoggedIn">You are logged in</h3>
+      <h2 *ngIf="loginFailed">{{errorMessage}}</h2>
     </mat-card-content>
 
     <mat-card-actions>
-      <button (click)="register()" *ngIf="!isSuccessful" color="primary" mat-raised-button>Submit</button>
+      <button (click)="login()" *ngIf="!isLoggedIn" color="primary" mat-raised-button>Submit</button>
     </mat-card-actions>
   </div>
 

@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {TokenService} from '../../services/token.service';
 
 @Component({
   selector: 'app-navigation',
@@ -7,10 +8,15 @@ import {Component, OnInit} from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  constructor() {
+  constructor(private tokenService: TokenService) {
   }
 
   ngOnInit(): void {
+  }
+
+  logout(): void {
+    this.tokenService.signOut();
+    window.location.reload();
   }
 
 }

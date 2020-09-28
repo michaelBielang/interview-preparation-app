@@ -27,6 +27,7 @@ import javax.validation.constraints.NotBlank;
 
 @RestController
 @Validated
+@CrossOrigin(origins = "http://localhost:4200")
 public class LoginController implements LoginControllerInterface {
 
     @Autowired

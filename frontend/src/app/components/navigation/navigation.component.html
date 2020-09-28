@@ -3,13 +3,19 @@
   <button aria-label="Example icon-button with menu icon" mat-icon-button>
     <mat-icon>menu</mat-icon>
   </button>
-  <span>ITA</span>
+  <button aria-label="OTA" mat-icon-button routerLink="/">
+    <span>Home</span>
+  </button>
   <span class="nav-spacer"></span>
-  <button aria-label="Example icon-button with heart icon" mat-icon-button routerLink="register"
+  <button aria-label="Login" mat-icon-button routerLink="login"
+          style="margin-right:20px">
+    <span>Login</span>
+  </button>
+  <button aria-label="Register" mat-icon-button routerLink="register"
           style="margin-right:20px">
     <span>Register</span>
   </button>
-  <button aria-label="Example icon-button with share icon" class="example-icon" mat-icon-button>
+  <button (click)="logout()" aria-label="Logout" class="example-icon" mat-icon-button>
     <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>
