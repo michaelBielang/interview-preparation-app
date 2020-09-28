@@ -27,6 +27,7 @@ import javax.validation.constraints.NotBlank;
 
 @RestController
 @Validated
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController implements UserControllerInterface {
 
     @Autowired
@@ -36,7 +37,6 @@ public class UserController implements UserControllerInterface {
     private JwtTokenService jwtTokenService;
 
     @Override
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "/register")
     @ResponseStatus(HttpStatus.CREATED)
     public JwtTokenResponse addUser(@RequestParam("username") @NotBlank final String username,
