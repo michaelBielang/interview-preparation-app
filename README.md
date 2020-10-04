@@ -45,10 +45,10 @@ docker run  --detach   --name internal-mysql -p 6604:3306 -e MYSQL_ROOT_PASSWORD
 docker run -it --link internal-mysql:mysql --rm mysql sh -c 'exec mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD"'
 ``
 
-docker run --name internal-backend -p 8080:8080  --link internal-mysql:mysql -d backend
-
+##### Run backend and link to sql container (link to ec-mysql container) with mysql clientx
+``
 docker run -P codemerger:0.0.1-SNAPSHOT -p 8080:8080 --link internal-mysql:mysql -d backend
-
+``
 ##### Further commands
 
 ``
