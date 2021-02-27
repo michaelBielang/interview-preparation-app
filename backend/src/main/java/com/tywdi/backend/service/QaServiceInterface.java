@@ -1,9 +1,7 @@
 package com.tywdi.backend.service;
 
-import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
+import com.tywdi.backend.model.dto.QuestionAnswerDTO;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -20,8 +18,8 @@ public interface QaServiceInterface {
 
     Iterable<QuestionAnswerDTO> getQaList();
 
-    Optional<QuestionAnswerDTO> getQuestion(String id);
+    QuestionAnswerDTO getQuestion(String id);
 
     @Transactional
-    Optional<QuestionAnswerDTO> updateQuestion(QuestionAnswerDTO updatedQAV, String id);
+    QuestionAnswerDTO updateQuestion(QuestionAnswerDTO updatedQAV, String id);
 }

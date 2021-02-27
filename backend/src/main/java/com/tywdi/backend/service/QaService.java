@@ -1,13 +1,12 @@
 package com.tywdi.backend.service;
 
 
-import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
+import com.tywdi.backend.exceptions.QuestionNotFoundException;
+import com.tywdi.backend.model.dto.QuestionAnswerDTO;
 import com.tywdi.backend.repository.QaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -29,6 +28,7 @@ public class QaService implements QaServiceInterface {
     @Transactional
     public QuestionAnswerDTO addQa(final String answer, final String question, final QuestionAnswerDTO.Category category) {
         final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(answer, question, category);
+
         return qaRepository.save(questionAnswerDTO);
     }
 
@@ -38,20 +38,20 @@ public class QaService implements QaServiceInterface {
     }
 
     @Override
-    public Optional<QuestionAnswerDTO> getQuestion(final String id) {
-        return qaRepository.findById(Long.parseLong(id));
+    public QuestionAnswerDTO getQuestion(final String id) {
+        return qaRepository
+                .findById(Long.parseLong(id))
+                .orElseThrow(() -> new QuestionNotFoundException("question-not-found", "Question " + id + "not found"));
     }
 
     @Override
     @Transactional
-    public Optional<QuestionAnswerDTO> updateQuestion(final QuestionAnswerDTO updatedQAV, final String id) {
-        Optional<QuestionAnswerDTO> optionalQuestionAnswerDTO = qaRepository.findById(Long.parseLong(id));
+    public QuestionAnswerDTO updateQuestion(final QuestionAnswerDTO updatedQAV, final String id) {
+        final QuestionAnswerDTO questionAnswerDTO = getQuestion(id);
 
-        optionalQuestionAnswerDTO.ifPresent(dbObj -> {
-            dbObj.setAnswer(updatedQAV.getAnswer());
-            dbObj.setQuestion(updatedQAV.getQuestion());
-        });
+        getQuestion(id).setAnswer(updatedQAV.getAnswer());
+        getQuestion(id).setQuestion(updatedQAV.getQuestion());
 
-        return optionalQuestionAnswerDTO;
+        return questionAnswerDTO;
     }
 }

@@ -1,8 +1,8 @@
 package com.tywdi.backend.controller;
 
-import com.tywdi.backend.model.DTO.AuthenticationRequest;
-import com.tywdi.backend.model.DTO.JwtTokenResponse;
 import com.tywdi.backend.model.User;
+import com.tywdi.backend.model.dto.AuthenticationRequest;
+import com.tywdi.backend.model.web.JwtTokenResponse;
 import com.tywdi.backend.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

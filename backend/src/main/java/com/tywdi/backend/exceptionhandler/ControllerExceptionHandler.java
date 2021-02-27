@@ -21,28 +21,27 @@ import javax.persistence.EntityNotFoundException;
  * @author: Michael Bielang, b137ang@codemerger.com.
  * @version: java version "14" 2020-03-17
  */
-
 @Slf4j
 @ControllerAdvice
 public class ControllerExceptionHandler implements ControllerExceptionHandlerInterface {
 
     @Override
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleEntityNotFoundException(final EntityNotFoundException ex) {
-        log.error(ex.getMessage());
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> handleEntityNotFoundException(final EntityNotFoundException entityNotFoundException) {
+        log.error(entityNotFoundException.getMessage());
+        return new ResponseEntity<>(entityNotFoundException.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @Override
     @ExceptionHandler(SignatureException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ErrorMsg handleSignatureException(final SignatureException ex, final WebRequest webRequest) {
+    public ErrorMsg handleSignatureException(final SignatureException signatureException, final WebRequest webRequest) {
 
         log.error("error fetching for user {} with error {} with parameters {}",
-                webRequest.getHeader("authorization"), ex.getMessage(), webRequest.getParameterMap());
+                webRequest.getHeader("authorization"), signatureException.getMessage(), webRequest.getParameterMap());
 
-        return new ErrorMsg(ex.getMessage());
+        return new ErrorMsg(signatureException.getMessage());
     }
 
 }

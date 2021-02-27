@@ -30,13 +30,14 @@ public class FilterChainExceptionHandler extends OncePerRequestFilter implements
     private HandlerExceptionResolver resolver;
 
     @Override
-    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
-
+    public void doFilterInternal(final HttpServletRequest request,
+                                 final HttpServletResponse response,
+                                 final FilterChain filterChain) {
         try {
             filterChain.doFilter(request, response);
-        } catch (Exception e) {
-            log.error("Spring Security Filter Chain Exception:", e);
-            resolver.resolveException(request, response, null, e);
+        } catch (final Exception exception) {
+            log.error("Spring Security Filter Chain Exception:", exception);
+            resolver.resolveException(request, response, null, exception);
         }
     }
 }

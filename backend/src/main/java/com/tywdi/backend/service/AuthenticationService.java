@@ -1,6 +1,6 @@
 package com.tywdi.backend.service;
 
-import com.tywdi.backend.model.DTO.JwtTokenResponse;
+import com.tywdi.backend.model.web.JwtTokenResponse;
 import com.tywdi.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

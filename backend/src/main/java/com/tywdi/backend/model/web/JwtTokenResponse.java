@@ -1,4 +1,4 @@
-package com.tywdi.backend.model.DTO;
+package com.tywdi.backend.model.web;
 
 import lombok.Data;
 

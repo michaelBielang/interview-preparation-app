@@ -2,7 +2,8 @@ package com.tywdi.backend.controller;
 
 import com.arakelian.jackson.utils.JacksonUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
+import com.tywdi.backend.exceptions.QuestionNotFoundException;
+import com.tywdi.backend.model.dto.QuestionAnswerDTO;
 import com.tywdi.backend.service.QaService;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Optional;
 
 import static com.tywdi.backend.helper.JwtTokenHelper.withMail;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,7 +62,7 @@ class QaControllerTest {
     @Test
     void getQuestion() throws Exception {
         final String id = "1";
-        when(qaService.getQuestion(id)).thenReturn(Optional.of(QUESTION_ANSWER_DTO));
+        when(qaService.getQuestion(id)).thenReturn(QUESTION_ANSWER_DTO);
 
         mockMvc.perform(MockMvcRequestBuilders.get(QA_URL + QUESTION_PATH)
                 .headers(withMail(GENERATED_EMAIL))
@@ -102,7 +102,7 @@ class QaControllerTest {
         assertThat(responseDTO.getCategory()).isEqualTo(CATEGORY);
     }
 
-    private QuestionAnswerDTO extractDTOFromResponse(MvcResult mvcResult) throws com.fasterxml.jackson.core.JsonProcessingException, UnsupportedEncodingException {
+    private QuestionAnswerDTO extractDTOFromResponse(final MvcResult mvcResult) throws com.fasterxml.jackson.core.JsonProcessingException, UnsupportedEncodingException {
         return new ObjectMapper()
                 .readValue(mvcResult.getResponse().getContentAsString(), QuestionAnswerDTO[].class)[0];
     }
@@ -131,7 +131,7 @@ class QaControllerTest {
 
         final QuestionAnswerDTO updatedDTO = new QuestionAnswerDTO(newAnswer, newQuestion, CATEGORY);
 
-        when(qaService.updateQuestion(QUESTION_ANSWER_DTO, id)).thenReturn(Optional.of(updatedDTO));
+        when(qaService.updateQuestion(QUESTION_ANSWER_DTO, id)).thenReturn(updatedDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.put(QA_URL + QUESTION_PATH + "/1")
                 .headers(withMail(GENERATED_EMAIL))
@@ -148,7 +148,7 @@ class QaControllerTest {
     @Test
     void failUpdateQuestion() throws Exception {
         final String id = "1";
-        when(qaService.updateQuestion(QUESTION_ANSWER_DTO, id)).thenReturn(Optional.empty());
+        when(qaService.updateQuestion(QUESTION_ANSWER_DTO, id)).thenThrow(new QuestionNotFoundException("", ""));
 
         mockMvc.perform(MockMvcRequestBuilders.put(QA_URL + QUESTION_PATH + "/{id}", id)
                 .headers(withMail(GENERATED_EMAIL))
@@ -162,7 +162,7 @@ class QaControllerTest {
     @Test
     void failQuestionNotAvailable() throws Exception {
         final String id = "1";
-        when(qaService.updateQuestion(QUESTION_ANSWER_DTO, id)).thenReturn(Optional.empty());
+        when(qaService.getQuestion(id)).thenThrow(new QuestionNotFoundException("", ""));
 
         mockMvc.perform(MockMvcRequestBuilders.get(QA_URL + QUESTION_PATH)
                 .param("id", id)

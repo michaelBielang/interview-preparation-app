@@ -1,12 +1,11 @@
 package com.tywdi.backend.controller;
 
 
-import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
+import com.tywdi.backend.model.dto.QuestionAnswerDTO;
 import com.tywdi.backend.service.QaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 
@@ -35,8 +34,7 @@ public final class QaController implements QaControllerInterface {
     @Override
     @GetMapping(value = "/question")
     public QuestionAnswerDTO getQuestion(@RequestParam("id") final String id) {
-        return qaService.getQuestion(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not present"));
+        return qaService.getQuestion(id);
     }
 
     @Override
@@ -48,10 +46,7 @@ public final class QaController implements QaControllerInterface {
 
     @Override
     @PutMapping(value = "question/{id}")
-    public QuestionAnswerDTO updateQuestion(@RequestBody @Valid final QuestionAnswerDTO updatedQAV, @PathVariable final String id) {
-        return qaService.updateQuestion(updatedQAV, id)
-                .orElseThrow(() -> {
-                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not present");
-                });
+    public QuestionAnswerDTO updateQuestion(@RequestBody @Valid final QuestionAnswerDTO updatedQA, @PathVariable final String id) {
+        return qaService.updateQuestion(updatedQA, id);
     }
 }

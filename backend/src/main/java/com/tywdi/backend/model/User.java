@@ -1,7 +1,7 @@
 package com.tywdi.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tywdi.backend.model.Enums.Role;
+import com.tywdi.backend.model.enums.Role;
 import lombok.Data;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.GrantedAuthority;

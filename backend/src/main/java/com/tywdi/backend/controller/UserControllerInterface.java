@@ -1,7 +1,7 @@
 package com.tywdi.backend.controller;
 
-import com.tywdi.backend.model.DTO.JwtTokenResponse;
 import com.tywdi.backend.model.User;
+import com.tywdi.backend.model.web.JwtTokenResponse;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

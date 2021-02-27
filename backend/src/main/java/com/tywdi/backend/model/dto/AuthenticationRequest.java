@@ -1,4 +1,4 @@
-package com.tywdi.backend.model.DTO;
+package com.tywdi.backend.model.dto;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;

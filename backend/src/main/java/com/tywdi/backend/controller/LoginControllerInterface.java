@@ -1,8 +1,8 @@
 package com.tywdi.backend.controller;
 
-import com.tywdi.backend.model.DTO.AuthenticationRequest;
-import com.tywdi.backend.model.DTO.JwtTokenResponse;
 import com.tywdi.backend.model.User;
+import com.tywdi.backend.model.dto.AuthenticationRequest;
+import com.tywdi.backend.model.web.JwtTokenResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

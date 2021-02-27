@@ -1,4 +1,4 @@
-package com.tywdi.backend.model.DTO;
+package com.tywdi.backend.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -29,7 +29,7 @@ public final class QuestionAnswerDTO {
     @JsonIgnore
     private Long id;
 
-    @NotBlank(message = "Name is mandatory")
+    @NotBlank()
     @Lob
     private String question;
 
@@ -40,13 +40,13 @@ public final class QuestionAnswerDTO {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @Version
     @JsonIgnore
     private int version;
 
     public QuestionAnswerDTO() {
         //hibernate dft ctor
     }
+
 
     public QuestionAnswerDTO(final String answer, final String question, final Category category) {
         this.question = question;

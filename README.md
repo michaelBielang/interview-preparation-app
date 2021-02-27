@@ -24,7 +24,7 @@ These are commonly asked questions, which sometimes make more or less sense in t
  
 ## Todos for further versions
 
- - Implement React on another microservice instant to offer two different UIs for the same backend
+- Implement React on another microservice instant to offer two different UIs for the same backend
 
 ## Installation
 
@@ -32,12 +32,30 @@ These are commonly asked questions, which sometimes make more or less sense in t
 * Java 14
 * If you use Windows 10 Pro ensure WSL2 is installed https://docs.microsoft.com/en-us/windows/wsl/install-win10
 
+## CI with Jenkins
+
+docker pull jenkins/jenkins
+
+Create a bridge network in Docker
+
+docker network create jenkins
+
+docker run --name jenkins-docker --rm --detach ^ --privileged --network jenkins --network-alias docker ^ --env
+DOCKER_TLS_CERTDIR=/certs ^ --volume jenkins-docker-certs:/certs/client ^ --volume jenkins-data:/var/jenkins_home ^
+docker:dind
+
+stop
+
+docker stop jenkins-docker
+
+The first number represents the port on the host while the last represents the container’s port
+
 ## Execute
 
 ##### Run Docker container with docker profile set in Dockerfile and migration scripts on host
 
 ``
-docker run  --detach   --name internal-mysql -p 6604:3306 -e MYSQL_ROOT_PASSWORD=user_pass -e MYSQL_DATABASE=internal -e MYSQL_USER=user -e MYSQL_PASSWORD=user_pass mysql``
+docker run --detach --name internal-mysql -p 6604:3306 -e MYSQL_ROOT_PASSWORD=user_pass -e MYSQL_DATABASE=internal -e MYSQL_USER=user -e MYSQL_PASSWORD=user_pass mysql``
 ``
 
 ##### Interact with Database (link to ec-mysql container) with mysql client

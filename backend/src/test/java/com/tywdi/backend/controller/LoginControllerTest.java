@@ -1,8 +1,8 @@
 package com.tywdi.backend.controller;
 
 import com.arakelian.jackson.utils.JacksonUtils;
-import com.tywdi.backend.model.DTO.AuthenticationRequest;
-import com.tywdi.backend.model.DTO.JwtTokenResponse;
+import com.tywdi.backend.model.dto.AuthenticationRequest;
+import com.tywdi.backend.model.web.JwtTokenResponse;
 import com.tywdi.backend.security.JwtAuthenticationEntryPoint;
 import com.tywdi.backend.security.JwtAuthenticationProvider;
 import com.tywdi.backend.service.AuthenticationService;

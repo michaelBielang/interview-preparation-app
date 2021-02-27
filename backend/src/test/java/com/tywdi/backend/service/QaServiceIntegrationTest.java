@@ -1,17 +1,18 @@
 package com.tywdi.backend.service;
 
-import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
+import com.tywdi.backend.exceptions.QuestionNotFoundException;
+import com.tywdi.backend.model.dto.QuestionAnswerDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -48,10 +49,11 @@ class QaServiceIntegrationTest {
     @Test
     void getQa() {
         final QuestionAnswerDTO insertedQA = qaService.addQa(ANSWER, QUESTION, CATEGORY);
-        final Optional<QuestionAnswerDTO> questionAnswerFromService = qaService
+
+        final QuestionAnswerDTO questionAnswerFromService = qaService
                 .getQuestion(String.valueOf(insertedQA.getId()));
 
-        assertThat(questionAnswerFromService.isPresent()).isTrue();
+        assertThat(questionAnswerFromService).isNotNull();
     }
 
     //positive case
@@ -74,20 +76,19 @@ class QaServiceIntegrationTest {
         final QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO(UPDATED_ANSWER, UPDATED_QUESTION, CATEGORY);
         qaService.updateQuestion(questionAnswerDTO, id.toString());
 
-        final Optional<QuestionAnswerDTO> updatedQA = qaService.getQuestion(id.toString());
-        updatedQA.ifPresent(qa -> {
-            assertThat(qa.getAnswer()).isEqualTo(UPDATED_ANSWER);
-            assertThat(qa.getQuestion()).isEqualTo(UPDATED_QUESTION);
-        });
+        final QuestionAnswerDTO updatedQA = qaService.getQuestion(id.toString());
+
+        assertThat(updatedQA.getAnswer()).isEqualTo(UPDATED_ANSWER);
+        assertThat(updatedQA.getQuestion()).isEqualTo(UPDATED_QUESTION);
     }
 
     //negative case
     @Test
     void updateQuestionWithException() {
         final QuestionAnswerDTO questionAnswerDTO = qaService.addQa(UPDATED_ANSWER, UPDATED_QUESTION, CATEGORY);
-        final Optional<QuestionAnswerDTO> optionalQuestionAnswerDTO =
-                qaService.updateQuestion(questionAnswerDTO, String.valueOf(questionAnswerDTO.getId() + 100));
 
-        assertThat(optionalQuestionAnswerDTO).isEmpty();
+        assertThatExceptionOfType(QuestionNotFoundException.class).isThrownBy(() ->
+                qaService.updateQuestion(questionAnswerDTO, String.valueOf(questionAnswerDTO.getId() + 100)))
+                .withMessageContaining("not found");
     }
 }

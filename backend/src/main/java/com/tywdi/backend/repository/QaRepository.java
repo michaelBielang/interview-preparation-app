@@ -1,7 +1,7 @@
 package com.tywdi.backend.repository;
 
 
-import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
+import com.tywdi.backend.model.dto.QuestionAnswerDTO;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

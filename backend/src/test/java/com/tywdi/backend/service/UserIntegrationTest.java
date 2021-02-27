@@ -1,15 +1,14 @@
 package com.tywdi.backend.service;
 
-import com.tywdi.backend.model.Enums.Role;
-import com.tywdi.backend.model.User;
+import com.tywdi.backend.exceptions.UserExistsException;
+import com.tywdi.backend.model.enums.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -40,8 +39,9 @@ class UserIntegrationTest {
     @Test // negative
     public void addExistingUser() {
         userService.addUser("USER_NAME", "PASSWORD", EMAIL, Role.USER);
-        final Optional<User> user = userService.addUser(USER_NAME, PASSWORD, EMAIL, Role.USER);
-        assertThat(user).isEmpty();
+
+        assertThatExceptionOfType(UserExistsException.class).isThrownBy(() ->
+                userService.addUser(USER_NAME, PASSWORD, EMAIL, Role.USER));
     }
     // TODO - michael.bielang: 31.08.2020 more tests
 }

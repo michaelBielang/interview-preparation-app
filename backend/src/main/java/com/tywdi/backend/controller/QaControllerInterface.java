@@ -1,6 +1,6 @@
 package com.tywdi.backend.controller;
 
-import com.tywdi.backend.model.DTO.QuestionAnswerDTO;
+import com.tywdi.backend.model.dto.QuestionAnswerDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

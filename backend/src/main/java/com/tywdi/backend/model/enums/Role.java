@@ -1,4 +1,4 @@
-package com.tywdi.backend.model.Enums;
+package com.tywdi.backend.model.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 

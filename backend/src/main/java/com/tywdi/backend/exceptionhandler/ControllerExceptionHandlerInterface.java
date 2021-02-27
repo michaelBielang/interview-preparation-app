@@ -21,18 +21,18 @@ import javax.persistence.EntityNotFoundException;
  * @version: java version "14" 2020-03-17
  */
 public interface ControllerExceptionHandlerInterface {
+
     @ExceptionHandler(EntityNotFoundException.class)
     ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex);
 
     @ExceptionHandler(SignatureException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    ErrorMsg handleSignatureException(SignatureException ex, WebRequest webRequest);
+    ErrorMsg handleSignatureException(SignatureException signatureException, WebRequest webRequest);
 
     @Data
-            //getter required for jackson
+//getter required for jackson
     class ErrorMsg {
-
-        private final String reason;
+        private final String error;
     }
 }

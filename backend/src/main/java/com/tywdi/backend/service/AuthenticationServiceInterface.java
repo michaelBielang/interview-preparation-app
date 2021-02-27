@@ -1,6 +1,6 @@
 package com.tywdi.backend.service;
 
-import com.tywdi.backend.model.DTO.JwtTokenResponse;
+import com.tywdi.backend.model.web.JwtTokenResponse;
 
 /**
  * Organisation: Codemerger Ldt.

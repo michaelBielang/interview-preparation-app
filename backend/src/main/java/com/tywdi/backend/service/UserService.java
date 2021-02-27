@@ -1,7 +1,8 @@
 package com.tywdi.backend.service;
 
-import com.tywdi.backend.model.Enums.Role;
+import com.tywdi.backend.exceptions.UserExistsException;
 import com.tywdi.backend.model.User;
+import com.tywdi.backend.model.enums.Role;
 import com.tywdi.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,8 +55,9 @@ public class UserService implements UserServiceInterface {
     public Optional<User> addUser(final String username, final String password, final String email, final Role role) {
 
         if (userRepository.getUserByEmail(email).isPresent()) {
-            return Optional.empty();
+            throw new UserExistsException("user-is-already-registered", "User: " + username + " already in database");
         }
+
         final String encodedPW = generatedEncodedPassword(password);
 
         final User user = new User(username, email, encodedPW, role);
@@ -92,7 +94,7 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
         final User user = userRepository
                 .getUserByEmail(email)
                 .orElseThrow(() -> {

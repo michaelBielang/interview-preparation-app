@@ -1,7 +1,7 @@
 package com.tywdi.backend.service;
 
-import com.tywdi.backend.model.Enums.Role;
 import com.tywdi.backend.model.User;
+import com.tywdi.backend.model.enums.Role;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
