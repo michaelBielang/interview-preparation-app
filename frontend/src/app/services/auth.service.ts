@@ -15,18 +15,16 @@ export class AuthService {
   }
 
   static getLoginHeader(): any {
-    const header = {
+    return {
       headers: new HttpHeaders({'Content-Type': 'application/json'})
     };
-    return header;
   }
 
   static getLoginBody(user): any {
-    const body = {
+    return {
       email: user.email,
       password: user.password
     };
-    return body;
   }
 
   private static generateRegisterHeader(user): any {
@@ -36,6 +34,7 @@ export class AuthService {
         .append('username', user.username)
         .append('password', user.password)
         .append('email', user.email)
+        .append('keycloak', user.keycloak)
     };
   }
 

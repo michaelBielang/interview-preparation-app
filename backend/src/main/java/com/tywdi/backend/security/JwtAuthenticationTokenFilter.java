@@ -1,6 +1,5 @@
 package com.tywdi.backend.security;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -22,16 +21,21 @@ import java.io.IOException;
 
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
-    @Value("${jwt.header}")
-    private String tokenHeader;
+    private static final String TOKEN_HEADER = "Authorization";
+    private static final String KEYCLOAK_HEADER = "KEYCLOAK";
+    private static final String BEARER = "Bearer ";
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        final String requestHeader = request.getHeader(this.tokenHeader);
+    protected void doFilterInternal(final HttpServletRequest request,
+                                    final HttpServletResponse response,
+                                    final FilterChain chain) throws ServletException, IOException {
 
-        if (requestHeader != null && requestHeader.startsWith("Bearer ")) {
-            String authToken = requestHeader.substring(7);
-            JwtAuthentication authentication = new JwtAuthentication(authToken);
+        final String requestHeader = request.getHeader(TOKEN_HEADER);
+        final boolean isKeycloak = Boolean.parseBoolean(request.getHeader(KEYCLOAK_HEADER));
+
+        if (requestHeader != null && requestHeader.startsWith(BEARER)) {
+            final String authToken = requestHeader.substring(BEARER.length());
+            final JwtAuthentication authentication = new JwtAuthentication(authToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         chain.doFilter(request, response);
