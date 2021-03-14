@@ -1,12 +1,16 @@
 package com.tywdi.backend.security;
 
-import com.tywdi.backend.service.JwtTokenService;
+import com.tywdi.backend.security.service.JwtTokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 /**
  * Organisation: Codemerger Ldt.
@@ -21,15 +25,35 @@ import org.springframework.stereotype.Component;
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationProvider.class);
+    private final OAuth2AuthorizedClientService authorizedClientService;
+    private final JwtTokenService jwtService;
 
     @Autowired
-    private JwtTokenService jwtService;
+    public JwtAuthenticationProvider(OAuth2AuthorizedClientService authorizedClientService, JwtTokenService jwtService) {
+        this.authorizedClientService = authorizedClientService;
+        this.jwtService = jwtService;
+    }
 
     @Override
     public Authentication authenticate(Authentication authentication) {
 
         final String token = (String) authentication.getCredentials();
+        final boolean userUseKeyCloak = ((JwtAuthentication) authentication).isKeycloak();
         final String username = jwtService.getUsernameFromToken(token);
+
+        OAuth2AuthorizedClient authorizedClient =
+                this.authorizedClientService.loadAuthorizedClient("mb-client", authentication.getName());
+
+        var map = Map.of(
+                "accessToken", authorizedClient.getAccessToken(),
+                "refreshToken", authorizedClient.getRefreshToken(),
+                "principalName", authorizedClient.getPrincipalName(),
+                "clientRegistration", authorizedClient.getClientRegistration()
+        );
+
+        if (userUseKeyCloak) {
+
+        }
 
         return jwtService.validateToken(token)
                 .map(aBoolean -> new JwtAuthenticatedProfile(username))

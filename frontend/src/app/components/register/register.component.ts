@@ -12,6 +12,9 @@ export class RegisterComponent implements OnInit {
   isSuccessful: boolean;
   isSignUpFailed: boolean;
   errorMessage: any;
+  keycloak = "Keycloak";
+  keycloakValue: any;
+
 
   constructor(private authService: AuthService,
               private tokenService: TokenService) {

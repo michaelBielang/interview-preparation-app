@@ -5,7 +5,7 @@ import com.tywdi.backend.model.dto.AuthenticationRequest;
 import com.tywdi.backend.model.web.JwtTokenResponse;
 import com.tywdi.backend.security.JwtAuthenticationEntryPoint;
 import com.tywdi.backend.security.JwtAuthenticationProvider;
-import com.tywdi.backend.service.AuthenticationService;
+import com.tywdi.backend.security.service.AuthenticationService;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

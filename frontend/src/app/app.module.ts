@@ -5,7 +5,7 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RegisterComponent} from './components/register/register.component';
 import {AppRoutingModule} from './app-routing.module';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LandingPageComponent} from './components/landing-page/landing-page.component';
 import {NavigationComponent} from './components/navigation/navigation.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -17,6 +17,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {HttpClientModule} from '@angular/common/http';
 import {LoginComponent} from './components/login/login.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 
 @NgModule({
@@ -38,8 +39,10 @@ import {LoginComponent} from './components/login/login.component';
     MatButtonModule,
     MatInputModule,
     MatCardModule,
+    MatCheckboxModule,
     MatProgressSpinnerModule,
     HttpClientModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

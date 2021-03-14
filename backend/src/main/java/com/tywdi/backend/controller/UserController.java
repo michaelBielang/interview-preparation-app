@@ -3,7 +3,7 @@ package com.tywdi.backend.controller;
 import com.tywdi.backend.model.User;
 import com.tywdi.backend.model.enums.Role;
 import com.tywdi.backend.model.web.JwtTokenResponse;
-import com.tywdi.backend.service.JwtTokenService;
+import com.tywdi.backend.security.service.JwtTokenService;
 import com.tywdi.backend.service.UserService;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,5 @@
 package com.tywdi.backend.configuration;
 
-import com.tywdi.backend.security.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,9 +22,6 @@ public interface SecurityConfigurationInt {
 
     @Autowired
     void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder);
-
-    @Bean
-    JwtAuthenticationTokenFilter authenticationTokenFilterBean();
 
     void configure(HttpSecurity httpSecurity) throws Exception;
 }

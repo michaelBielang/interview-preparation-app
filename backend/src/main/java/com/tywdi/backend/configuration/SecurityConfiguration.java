@@ -14,8 +14,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * Created by Michael Bielang on 19.07.2018.
@@ -55,10 +59,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
         authenticationManagerBuilder.authenticationProvider(jwtAuthenticationProvider);
     }
 
-    @Override
     @Bean
-    public JwtAuthenticationTokenFilter authenticationTokenFilterBean() {
-        return new JwtAuthenticationTokenFilter();
+    public WebClient webClient(ClientRegistrationRepository clientRegistrationRepository,
+                               OAuth2AuthorizedClientRepository authorizedClientRepository) {
+
+
+        ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2FilterFunction =
+                new ServletOAuth2AuthorizedClientExchangeFilterFunction(
+                        clientRegistrationRepository, authorizedClientRepository);
+
+        oauth2FilterFunction.setDefaultClientRegistrationId("mb-client");
+
+        return WebClient.builder()
+                .apply(oauth2FilterFunction.oauth2Configuration())
+                .build();
     }
 
     @Override
@@ -80,7 +94,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                 .antMatchers("/login").permitAll()
                 .anyRequest().authenticated();
 
-        httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(new JwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         httpSecurity.headers().cacheControl();
     }
 }

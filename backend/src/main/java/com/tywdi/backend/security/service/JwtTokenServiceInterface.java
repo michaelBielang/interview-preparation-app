@@ -1,4 +1,4 @@
-package com.tywdi.backend.service;
+package com.tywdi.backend.security.service;
 
 import io.jsonwebtoken.Claims;
 

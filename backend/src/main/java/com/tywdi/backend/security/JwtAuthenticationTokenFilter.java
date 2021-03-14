@@ -35,7 +35,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         if (requestHeader != null && requestHeader.startsWith(BEARER)) {
             final String authToken = requestHeader.substring(BEARER.length());
-            final JwtAuthentication authentication = new JwtAuthentication(authToken);
+            final JwtAuthentication authentication = new JwtAuthentication(authToken, isKeycloak);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         chain.doFilter(request, response);

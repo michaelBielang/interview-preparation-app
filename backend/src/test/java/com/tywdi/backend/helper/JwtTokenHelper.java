@@ -1,6 +1,6 @@
 package com.tywdi.backend.helper;
 
-import com.tywdi.backend.service.JwtTokenService;
+import com.tywdi.backend.security.service.JwtTokenService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 

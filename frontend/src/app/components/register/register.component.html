@@ -40,6 +40,16 @@
                 </mat-form-field>
               </td>
             </tr>
+            <tr>
+              <td>
+                <label>
+                  <mat-checkbox
+                    [formControlName]="field.keycloakValue">
+                  </mat-checkbox>
+                  {{keycloak}}
+                </label>
+              </td>
+            </tr>
           </table>
         </div>
       </form>

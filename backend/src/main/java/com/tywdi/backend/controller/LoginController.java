@@ -3,7 +3,7 @@ package com.tywdi.backend.controller;
 import com.tywdi.backend.model.User;
 import com.tywdi.backend.model.dto.AuthenticationRequest;
 import com.tywdi.backend.model.web.JwtTokenResponse;
-import com.tywdi.backend.service.AuthenticationService;
+import com.tywdi.backend.security.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

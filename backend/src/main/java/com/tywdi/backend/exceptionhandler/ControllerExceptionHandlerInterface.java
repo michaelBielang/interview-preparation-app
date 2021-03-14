@@ -31,7 +31,7 @@ public interface ControllerExceptionHandlerInterface {
     ErrorMsg handleSignatureException(SignatureException signatureException, WebRequest webRequest);
 
     @Data
-//getter required for jackson
+    //getter required for jackson
     class ErrorMsg {
         private final String error;
     }

@@ -19,6 +19,7 @@ import java.util.Collection;
 public class JwtAuthentication implements Authentication {
 
     private final String token;
+    private final boolean isKeycloak;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -47,7 +48,10 @@ public class JwtAuthentication implements Authentication {
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+    }
 
+    public boolean isKeycloak() {
+        return isKeycloak;
     }
 
     @Override
